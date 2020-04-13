@@ -44,3 +44,13 @@ body {
     transition: 0.3s;
   }
 
+  .form-input {
+    height: 200px;
+    width : 80%;
+    font-size:14pt;
+  }
+
+  #Annoter {
+      height : 10px;
+      width : 20 px;
+  }
