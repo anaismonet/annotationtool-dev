@@ -1,10 +1,9 @@
 'use strict'
 
-const path = require('path')
 const {ipcRenderer} = require('electron')
 
 // on receive txt
-ipcRenderer.on('inputs', (event, txt) => {
+ipcRenderer.on('inputstoPrint', (event, txt) => {
   console.log('received')
     // get the Inputtxt ul
     const Inputtxt = document.getElementById('Inputtxt')

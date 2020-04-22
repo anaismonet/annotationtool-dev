@@ -21,14 +21,26 @@ class DataStore extends Store {
   getinputs () {
     // set object's inputs to inputs in JSON file
     this.inputs = this.get('inputs') || []
-
     return this
   }
 
   addinputText (inputText) {
     // merge the existing inputs with the new inputText
     this.inputs = [ ...this.inputs, inputText ]
-    
+
+    return this.saveinputs()
+  }
+
+  deleteTxt (txt) {
+    // filter out the target txt
+    this.inputs = this.inputs.filter(t => t !== txt)
+
+    return this.saveinputs()
+  }
+
+  deleteAll(){
+    this.inputs = this.clear()
+
     return this.saveinputs()
   }
 
