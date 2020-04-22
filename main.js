@@ -19,7 +19,7 @@ function main () {
     if (!InputTextWin) {
       // create a new add todo window
       InputTextWin = new Window({
-        file: path.join(__dirname, 'ann_type_win.html'),
+        file: path.join(__dirname, './src/ann_type_win.html'),
         width: 400,
         height: 400,
         // close with the main window
