@@ -3,6 +3,7 @@
 const { ipcRenderer } = require('electron')
 
 document.getElementById('InputText').addEventListener('submit', (evt) => {
+  
   // prevent default refresh functionality of forms
   evt.preventDefault()
 
@@ -10,14 +11,8 @@ document.getElementById('InputText').addEventListener('submit', (evt) => {
   const input = evt.target[0]
 
   // send todo to main process
-  //ipcRenderer.send('add-todo', input.value)
-
+  ipcRenderer.send('add-text', input.value)
+  
   // reset input
   input.value = ''
 })
-
-// create InputText window button
-document.getElementById('AddText').addEventListener('click', () => {
-    ipcRenderer.send('InputText-window')
-  })
-  

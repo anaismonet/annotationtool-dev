@@ -2,6 +2,9 @@ const path = require('path')
 const { app, ipcMain} = require('electron')
 
 const Window = require('./Window')
+const DataStore = require('./DataStore')
+
+const textData = new DataStore({ name: 'TextMain' })
 
 require('electron-reload')(__dirname)
 
@@ -11,33 +14,15 @@ function main () {
       file: path.join(__dirname,'index.html')
     })
 
-    let InputTextWin 
 
-    // create InputText window
-    ipcMain.on('InputText-window', () => {
-    // if InputTextWin does not already exist
-    if (!InputTextWin) {
-      // create a new add todo window
-      InputTextWin = new Window({
-        file: path.join(__dirname, './src/ann_type_win.html'),
-        width: 400,
-        height: 400,
-        // close with the main window
-        parent: mainWindow
-      })
-
-      // cleanup
-      InputTextWin.on('closed', () => {
-        InputTextWin = null
-      })
-    }
+    // add-text from ann_type_win
+    ipcMain.on('add-text', (event, txt) => {
+      const updatedText = textData.addinputText(txt).inputs
+      
+      mainWindow.send('inputs', updatedText)
   })
 
 }  
-
-
-  
-
 
 app.on('ready', main)
 
