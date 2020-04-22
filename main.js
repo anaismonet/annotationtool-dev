@@ -47,8 +47,9 @@ function main () {
 
   // clear-txt from txt list window
   ipcMain.on('clear-txt', (event) => {
-    const updatedTxt = textData.deleteAll()
-    mainWindow.send('inputstoPrint', updatedTxt)
+    textData.clear()
+    //const updatedTxt = textData.deleteAll()
+    //mainWindow.send('inputstoPrint', updatedTxt)
   })
 
 }  
