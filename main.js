@@ -44,19 +44,12 @@ function main () {
       const updatedText = textData.addinputText(txt).inputs
       console.log(mainWindow.send('inputstoPrint', updatedText))
   })
-    // delete-txt from txt list window
-    ipcMain.on('delete-txt', (event, txt) => {
-    const updatedTxt = textData.delete(txt).inputs
-    console.log(mainWindow.send('inputstoPrint', updatedTxt))
-  })
 
   // clear-txt from txt list window
   ipcMain.on('clear-txt', (event) => {
     const updatedTxt = textData.deleteAll()
     mainWindow.send('inputstoPrint', updatedTxt)
   })
-
-  
 
 }  
 
