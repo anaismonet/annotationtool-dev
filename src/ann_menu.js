@@ -2,24 +2,29 @@
 
 const { ipcRenderer } = require('electron')
 
-  // clear add todo window button
+// Lorsque l'on clique sur clearBtn le renderer process envoie au main process clear-txt (cf main.js)
 document.getElementById('clearBtn').addEventListener('click', () => {
     alert("All cleared")
     ipcRenderer.send('clear-txt')
   })
-  
+
+// Lorsque l'on clique sur AnnoterBtn le renderer process envoie au main process add-ann-window
+// qui sera la fenêtre pour annoter 
 document.getElementById('AnnoterBtn').addEventListener('click', () => {
     ipcRenderer.send('add-ann-window')
   })
 
-// create add todo window button
+// Lorsque l'on clique sur AnnoterBtn le renderer process envoie au main process add-window
+// qui sera la fenêtre pour écrire notre texte
 document.getElementById('WriteBtn').addEventListener('click', () => {
   ipcRenderer.send('add-window')
 })
 
-// on receive txt
+// Quand ce renderer process reçoit inputstoPrint
+// il va ajouter le contenu du JSON file dans la page html ann_menu.html 
+// dans la balise id=Inputtxt
 ipcRenderer.on('inputstoPrint', (event, txt) => {
-      // get the Inputtxt ul
+      // get the Inputtxt id=Inputtxt
       const Inputtxt = document.getElementById('Inputtxt')
       
       // create html string
@@ -29,7 +34,7 @@ ipcRenderer.on('inputstoPrint', (event, txt) => {
         return html
       }, '')
     
-      // set list html to the todo items
+      // set list html to the txtitems
       Inputtxt.innerHTML = txtItems
 
     })

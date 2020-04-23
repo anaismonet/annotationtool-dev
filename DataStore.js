@@ -31,19 +31,6 @@ class DataStore extends Store {
     return this.saveinputs()
   }
 
-  deleteTxt (txt) {
-    // filter out the target txt
-    this.inputs = this.inputs.filter(t => t !== txt)
-
-    return this.saveinputs()
-  }
-
-  deleteAll(){
-    this.inputs = this.clear()
-
-    return this.saveinputs()
-  }
-
 }
 
 module.exports = DataStore
