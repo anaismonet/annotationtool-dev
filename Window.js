@@ -4,7 +4,7 @@ const {BrowserWindow} = require('electron')
 // default window settings
 const defaultProps = {
     width: 700,
-    height: 800,
+    height: 600,
     show: false,
     
     // update for electron V5+
@@ -32,22 +32,4 @@ const defaultProps = {
   module.exports = Window
 
 
-/*
-let win
 
-function createWindow() {
-   win = new BrowserWindow({width: 800, height: 600})
-
- 
-   win.loadURL(url.format ({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file:',
-      slashes: true
-   }))
-
-   win.on('resize', updateReply)
-   win.on('move', updateReply)
-   win.on('close', () => { win = null })
-   
-}
-*/

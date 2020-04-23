@@ -2,6 +2,8 @@
 
 const { ipcRenderer } = require('electron')
 
+
+
 document.getElementById('InputText').addEventListener('submit', (evt) => {
   
   // prevent default refresh functionality of forms
@@ -15,4 +17,5 @@ document.getElementById('InputText').addEventListener('submit', (evt) => {
   alert("Envoyé")
   // reset input
   input.value = ''
+
 })

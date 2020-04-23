@@ -19,11 +19,11 @@ function main () {
     })
 
     let addWin
-      // create add todo window
-    ipcMain.on('add-ann-window', () => {
-    // if addTodoWin does not already exist
+      // create add text window
+    ipcMain.on('add-window', () => {
+    // if addWin does not already exist
     if (!addWin) {
-      // create a new add todo window
+      // create a new window
       addWin = new Window({
         file: path.join('src', 'ann_type.html'),
         width: 400,
@@ -39,8 +39,30 @@ function main () {
     }
   })
 
+
+  let annWin
+    // create annotation window
+  ipcMain.on('add-ann-window', () => {
+  // if annWin does not already exist
+  if (!addWin) {
+    // create a new  window
+    annWin = new Window({
+      file: path.join('src', 'annotation.html'),
+      width: 200,
+      height: 200,
+      // close with the main window
+      parent: mainWindow
+    })
+
+    // cleanup
+    annWin.on('closed', () => {
+      annWin = null
+    })
+    }
+  })
+
     // add-text from ann_type_win
-    ipcMain.on('add-text', (event, txt) => {
+  ipcMain.on('add-text', (event, txt) => {
       const updatedText = textData.addinputText(txt).inputs
       console.log(mainWindow.send('inputstoPrint', updatedText))
   })
@@ -48,9 +70,8 @@ function main () {
   // clear-txt from txt list window
   ipcMain.on('clear-txt', (event) => {
     textData.clear()
-    //const updatedTxt = textData.deleteAll()
-    //mainWindow.send('inputstoPrint', updatedTxt)
   })
+
 
 }  
 

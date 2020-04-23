@@ -4,13 +4,17 @@ const { ipcRenderer } = require('electron')
 
   // clear add todo window button
 document.getElementById('clearBtn').addEventListener('click', () => {
+    alert("All cleared")
     ipcRenderer.send('clear-txt')
   })
   
+document.getElementById('AnnoterBtn').addEventListener('click', () => {
+    ipcRenderer.send('add-ann-window')
+  })
 
 // create add todo window button
-document.getElementById('AnnoterBtn').addEventListener('click', () => {
-  ipcRenderer.send('add-ann-window')
+document.getElementById('WriteBtn').addEventListener('click', () => {
+  ipcRenderer.send('add-window')
 })
 
 // on receive txt
