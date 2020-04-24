@@ -1,6 +1,7 @@
 const path = require('path')
 const { app, ipcMain} = require('electron')
 
+const DataJson = require('./DataJson')
 const Window = require('./Window')
 const DataStore = require('./DataStore')
 const fs = require('fs')
@@ -10,7 +11,8 @@ const textData = new DataStore({ name: 'TextMain' })
 
 // DataStructure contient l'annotation
 // const DataStructure = new DataStore([{ 'text ' : '', 'type' :''}])
-const DataStructure = new DataStore()
+const DataStructure = new DataJson()
+//const DataStructure = require('electron-json-storage')
 
 require('electron-reload')(__dirname)
 
@@ -74,6 +76,7 @@ function main () {
       console.log(mainWindow.send('inputstoPrint', updatedText))
       //console.log(mainWindow.send('inputstoPrint', txt))
       console.log(DataStructure.addText(txt).text)
+      //console.log(DataStructure.set('text', { text : txt }))
   })
 
   // clear-txt from txt list window
@@ -86,13 +89,15 @@ function main () {
   /* ANNOTATION */  
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
-    console.log(DataStructure)
+    //console.log(DataStructure.set('type', { type : annotation }))
+    //console.log(DataStructure.getText().text)
+    //console.log(DataStructure.getText().text && DataStructure.getType().type)
   })
 
-  
-  ipcMain.on('json', (event) => {
-    let data = JSON.stringify(DataStructure);
 
+  ipcMain.on('json', (event) => {
+    //let data = JSON.stringify(DataStructure, null, 2);
+    let data = JSON.stringify(DataStructure, null, 2);
     fs.writeFile('structure.json', data, (err) => {
       if (err) throw err;
       console.log('Data written to file');

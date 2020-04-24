@@ -4,6 +4,7 @@ const { ipcRenderer } = require('electron')
 
 // Lorsque l'on clique sur DownloadBtn le renderer process envoie au main process json (cf main.js)
 document.getElementById('DownloadBtn').addEventListener('click', () => {
+  alert('Downloaded')
   ipcRenderer.send('json')
 })
 

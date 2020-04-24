@@ -1,1 +1,3 @@
-{"events":{"_events":{},"_eventsCount":0},"path":"/Users/monetanais/Library/Application Support/annotationtool-dev/config.json","inputs":[],"text":["Bonjour"],"type":["salutation"]}
+[
+  "salutation"
+]
