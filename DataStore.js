@@ -8,6 +8,8 @@ class DataStore extends Store {
 
     // initialize with inputs or empty array
     this.inputs = this.get('inputs') || []
+    this.text = this.get('text') || []
+    this.type = this.get('type') || []
   }
 
   saveinputs () {
@@ -29,6 +31,27 @@ class DataStore extends Store {
     this.inputs = [ ...this.inputs, inputText ]
 
     return this.saveinputs()
+  }
+
+
+  saveText(){
+    this.set('text', this.text)
+    return this
+  }
+
+  addText (inputText) {
+    this.text = [ ...this.text, inputText ]
+    return this.saveText()
+  }
+
+  saveType(){
+    this.set('type', this.type)
+    return this
+  }
+
+  addType (inputText) {
+    this.type = [ ...this.type, inputText ]
+    return this.saveType()
   }
 
 }

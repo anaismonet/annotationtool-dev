@@ -3,9 +3,14 @@ const { app, ipcMain} = require('electron')
 
 const Window = require('./Window')
 const DataStore = require('./DataStore')
+const fs = require('fs')
 
 // DataStore stocke le texte à annoter dans un fichier JSON
 const textData = new DataStore({ name: 'TextMain' })
+
+// DataStructure contient l'annotation
+// const DataStructure = new DataStore([{ 'text ' : '', 'type' :''}])
+const DataStructure = new DataStore()
 
 require('electron-reload')(__dirname)
 
@@ -60,19 +65,41 @@ function main () {
     }
   })
 
-
     // add-text from ann_type_win
   // Lorsque le main process reçoit 'add-text' il ajoute txt dans le fichier JSON textData
   // puis envoie ce fichier à un renderer process (cf ann_menu.js)
   ipcMain.on('add-text', (event, txt) => {
       const updatedText = textData.addinputText(txt).inputs
+      console.log(updatedText)
       console.log(mainWindow.send('inputstoPrint', updatedText))
+      //console.log(mainWindow.send('inputstoPrint', txt))
+      console.log(DataStructure.addText(txt).text)
   })
 
   // clear-txt from txt list window
   // Supprime le contenu de textData
   ipcMain.on('clear-txt', (event) => {
     textData.clear()
+    DataStructure.clear()
+  })
+
+  /* ANNOTATION */  
+  ipcMain.on('add-annotation', (event, annotation ) => {
+    console.log(DataStructure.addType(annotation).type)
+    console.log(DataStructure)
+  })
+
+  
+  ipcMain.on('json', (event) => {
+    let data = JSON.stringify(DataStructure);
+
+    fs.writeFile('structure.json', data, (err) => {
+      if (err) throw err;
+      console.log('Data written to file');
+    });
+
+  console.log('This is after the write call');
+
   })
 
 }  
