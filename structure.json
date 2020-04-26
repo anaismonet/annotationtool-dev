@@ -1,3 +1,6 @@
-[
-  "salutation"
-]
+{
+	"text": "Bonjour",
+	"type": [
+		"Salutation"
+	]
+}

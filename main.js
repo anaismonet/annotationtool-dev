@@ -6,6 +6,7 @@ const Window = require('./Window')
 const DataStore = require('./DataStore')
 const fs = require('fs')
 
+
 // Permet de sauvegarde notre json le bon dossier
 app.setPath("userData", __dirname + "/config")
 
@@ -13,9 +14,9 @@ app.setPath("userData", __dirname + "/config")
 const textData = new DataStore({ name: 'TextMain' })
 
 // DataStructure contient l'annotation
-// const DataStructure = new DataStore([{ 'text ' : '', 'type' :''}])
 const DataStructure = new DataJson({ name : 'DataStruct'})
-//const DataStructure = require('electron-json-storage')
+
+const config = require('./config/DataStruct.json')
 
 require('electron-reload')(__dirname)
 
@@ -99,18 +100,80 @@ function main () {
 
 
   ipcMain.on('json', (event) => {
-    //let data = JSON.stringify(DataStructure, null, 2);
-    let data = JSON.stringify(DataStructure, null, 2);
-    fs.writeFile('structure.json', data, (err) => {
-      if (err) throw err;
-      console.log('Data written to file');
-    });
 
-  console.log('This is after the write call');
+    //var tabJson = [];
+    fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
+      if (err) {
+          console.log("File read failed:", err)
+          return
+      }
+      //const jsonString2 = JSON.stringify(jsonString);
+      var content = "[]"
+      fs.writeFile('DataStructure.json', content, (err) => {
+        if(err){
+            alert("An error ocurred creating the file "+ err.message)
+        }
+        else {
+          fs.readFile('DataStructure.json', 'utf8', function (err, data) {
+            if (err) {
+                console.log(err)
+            } else {
+                const file = JSON.parse(data);
+                //file.events.push({"id": title1, "year": 2018, "month": 1, "day": 3});
+                //file.events.push({"id": title2, "year": 2018, "month": 2, "day": 4});
+                file.push(jsonString);
+                const json = JSON.stringify(file);
+         
+                fs.writeFile('DataStructure.json', json, 'utf8', function(err){
+                     if(err){ 
+                           console.log(err); 
+                     } else {
+                           console.log('Data written to file')
+                     }});
+            }
+         
+         });
+        }
+    });
+      /*console.log('File data:', jsonString) 
+      tabJson.push(jsonString);
+      console.log(tabJson);
+      fs.writeFile('structure.json', tabJson, (err) => {
+        if (err) throw err;
+        console.log('Data written to file');
+      });
+      */
+  })
+
+   
+
+    //var content = fs.readFile('./DataStruct.json', (err) => {
+      //if (err) throw err;
+      //var content2 = JSON.parse(content);
+      //var parseJson = JSON.parse(content2.text);
+      //console.log(parseJson);
+    //})
+    //tabJson.push();
+    //console.log(tabJson);
+    
+  /*
+    // destination.txt will be created or overwritten by default.
+    fs.copyFile('./config/DataStruct.json', 'DataStructure.json', (err) => {
+      if (err) throw err;
+      console.log(' ./config/DataStruct.json was copied to DataStructure.json');
+    })
+    //let data = JSON.stringify(DataStructure, null, 2);
+    //let data = JSON.stringify(DataStructure, null, 2);
+    //fs.writeFile('structure.json', data, (err) => {
+      //if (err) throw err;
+      //console.log('Data written to file');
+    //});
+    */
+  //console.log('This is after the write call');
 
   })
 
-}  
+} 
 
 app.on('ready', main)
 
