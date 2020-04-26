@@ -6,12 +6,15 @@ const Window = require('./Window')
 const DataStore = require('./DataStore')
 const fs = require('fs')
 
+// Permet de sauvegarde notre json le bon dossier
+app.setPath("userData", __dirname + "/config")
+
 // DataStore stocke le texte à annoter dans un fichier JSON
 const textData = new DataStore({ name: 'TextMain' })
 
 // DataStructure contient l'annotation
 // const DataStructure = new DataStore([{ 'text ' : '', 'type' :''}])
-const DataStructure = new DataJson()
+const DataStructure = new DataJson({ name : 'DataStruct'})
 //const DataStructure = require('electron-json-storage')
 
 require('electron-reload')(__dirname)
