@@ -107,7 +107,7 @@ function main () {
           console.log("File read failed:", err)
           return
       }
-      //const jsonString2 = JSON.stringify(jsonString);
+      const jsonString2 = JSON.parse(jsonString);
       var content = "[]"
       fs.writeFile('DataStructure.json', content, (err) => {
         if(err){
@@ -121,7 +121,7 @@ function main () {
                 const file = JSON.parse(data);
                 //file.events.push({"id": title1, "year": 2018, "month": 1, "day": 3});
                 //file.events.push({"id": title2, "year": 2018, "month": 2, "day": 4});
-                file.push(jsonString);
+                file.push(jsonString2);
                 const json = JSON.stringify(file);
          
                 fs.writeFile('DataStructure.json', json, 'utf8', function(err){
