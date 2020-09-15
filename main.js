@@ -91,7 +91,6 @@ function main () {
     }
   })
 
-
   // add-text from ann_type_win
   // Lorsque le main process reçoit 'add-text' il ajoute txt dans le fichier JSON textData
   // puis envoie ce fichier à un renderer process (cf ann_menu.js)
@@ -106,7 +105,6 @@ function main () {
   // clear-txt from txt list window
   // Supprime le contenu de textData
   ipcMain.on('clear-txt', (event) => {
-    //textData.clear()
     textData.deleteText()
     const updatedText = textData.getinputs()
     DataStructure.clear()
