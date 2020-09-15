@@ -61,6 +61,17 @@ class DataStore extends Store {
     return (this.get('text') || this.get('type'))
   }
 
+  getText(){
+    this.text = this.get('text') || []
+    return this
+  }
+
+  deleteText() {
+    this.text = []
+    this.inputs = []
+    return this.saveinputs()
+  }
+
 }
 
 module.exports = DataStore

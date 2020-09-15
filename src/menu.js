@@ -6,11 +6,11 @@ const {remote} = require('electron')
          // Build menu one item at a time, unlike
          menu.append(new MenuItem ({
             label: 'MenuItem1',
-            click() { 
+            click() {
                console.log('item 1 clicked')
             }
          }))
-         
+
          menu.append(new MenuItem({type: 'separator'}))
          menu.append(new MenuItem({label: 'MenuItem2', type: 'checkbox', checked: true}))
          menu.append(new MenuItem ({

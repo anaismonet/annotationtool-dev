@@ -15,7 +15,7 @@ document.getElementById('clearBtn').addEventListener('click', () => {
   })
 
 // Lorsque l'on clique sur AnnoterBtn le renderer process envoie au main process add-ann-window
-// qui sera la fenêtre pour annoter 
+// qui sera la fenêtre pour annoter
 document.getElementById('AnnoterBtn').addEventListener('click', () => {
     ipcRenderer.send('add-ann-window')
   })
@@ -27,20 +27,25 @@ document.getElementById('WriteBtn').addEventListener('click', () => {
 })
 
 // Quand ce renderer process reçoit inputstoPrint
-// il va ajouter le contenu du JSON file dans la page html ann_menu.html 
+// il va ajouter le contenu du JSON file dans la page html ann_menu.html
 // dans la balise id=Inputtxt
 ipcRenderer.on('inputstoPrint', (event, txt) => {
       // get the Inputtxt id=Inputtxt
       const Inputtxt = document.getElementById('Inputtxt')
-      
+
       // create html string
       const txtItems = txt.reduce((html, text) => {
-        html += `<a class="input-txt">${text}</a>`
-    
+        html += `<a id="input" class="input-txt">${text}</a>`
+
         return html
       }, '')
-    
+
       // set list html to the txtitems
       Inputtxt.innerHTML = txtItems
 
+    })
+
+    ipcRenderer.on('toClear', (event) => {
+      var div = document.getElementById('input')
+      div.parentNode.removeChild(div)
     })

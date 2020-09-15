@@ -11,7 +11,7 @@ const fs = require('fs')
 app.setPath("userData", __dirname + "/config")
 
 // DataStore stocke le texte à annoter dans un fichier JSON
-const textData = new DataStore({ name: 'TextMain' })
+const textData = new DataStore({ name : 'TextMain' })
 
 // DataStructure contient l'annotation
 const DataStructure = new DataJson({ name : 'DataStruct'})
@@ -106,8 +106,11 @@ function main () {
   // clear-txt from txt list window
   // Supprime le contenu de textData
   ipcMain.on('clear-txt', (event) => {
-    textData.clear()
+    //textData.clear()
+    textData.deleteText()
+    const updatedText = textData.getinputs()
     DataStructure.clear()
+    mainWindow.send('toClear')
   })
 
   /* ANNOTATION */
@@ -117,7 +120,7 @@ function main () {
 
 
   ipcMain.on('json', (event) => {
-    
+
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
           console.log("File read failed:", err)
