@@ -18,14 +18,28 @@ const DataStructure = new DataJson({ name : 'DataStruct'})
 
 const config = require('./config/DataStruct.json')
 
-require('electron-reload')(__dirname)
-
 function main () {
 
     // Création de la fenêtre principale
     let mainWindow = new Window({
-      file: path.join(__dirname,'index.html')
+      file: path.join(__dirname,'index.html'),
+      backgroundcolor : "#818181"
     })
+
+    mainWindow.once('ready-to-show', () => {
+      mainWindow.show()
+    })
+    mainWindow.once('show', () => {
+      mainWindow.webContents.send('inputstoPrint', textData.inputs)
+    })
+
+    /*
+    // if the render process crashes, reload the window
+    mainWindow.webContents.on('crashed', () => {
+      mainWindow.destroy();
+      main();
+    });
+    */
 
     // Fenêtre secondaire qui va nous permettre d'écrire le texte à annoter
     let addWin
@@ -42,6 +56,9 @@ function main () {
         parent: mainWindow
       })
 
+      addWin.once('ready-to-show', () => {
+        addWin.show()
+      })
       // cleanup
       addWin.on('closed', () => {
         addWin = null
@@ -64,6 +81,9 @@ function main () {
       parent: mainWindow
     })
 
+    annWin.once('ready-to-show', () => {
+      annWin.show()
+    })
     // cleanup
     annWin.on('closed', () => {
       annWin = null
@@ -71,16 +91,16 @@ function main () {
     }
   })
 
-    // add-text from ann_type_win
+
+  // add-text from ann_type_win
   // Lorsque le main process reçoit 'add-text' il ajoute txt dans le fichier JSON textData
   // puis envoie ce fichier à un renderer process (cf ann_menu.js)
+
   ipcMain.on('add-text', (event, txt) => {
       const updatedText = textData.addinputText(txt).inputs
       console.log(updatedText)
-      console.log(mainWindow.send('inputstoPrint', updatedText))
-      //console.log(mainWindow.send('inputstoPrint', txt))
       console.log(DataStructure.addText(txt).text)
-      //console.log(DataStructure.set('text', { text : txt }))
+      console.log(mainWindow.send('inputstoPrint', updatedText))
   })
 
   // clear-txt from txt list window
@@ -90,18 +110,14 @@ function main () {
     DataStructure.clear()
   })
 
-  /* ANNOTATION */  
+  /* ANNOTATION */
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
-    //console.log(DataStructure.set('type', { type : annotation }))
-    //console.log(DataStructure.getText().text)
-    //console.log(DataStructure.getText().text && DataStructure.getType().type)
   })
 
 
   ipcMain.on('json', (event) => {
-
-    //var tabJson = [];
+    
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
           console.log("File read failed:", err)
@@ -119,61 +135,29 @@ function main () {
                 console.log(err)
             } else {
                 const file = JSON.parse(data);
-                //file.events.push({"id": title1, "year": 2018, "month": 1, "day": 3});
-                //file.events.push({"id": title2, "year": 2018, "month": 2, "day": 4});
                 file.push(jsonString2);
                 const json = JSON.stringify(file);
-         
+
                 fs.writeFile('DataStructure.json', json, 'utf8', function(err){
-                     if(err){ 
-                           console.log(err); 
+                     if(err){
+                           console.log(err);
                      } else {
                            console.log('Data written to file')
                      }});
             }
-         
          });
         }
-    });
-      /*console.log('File data:', jsonString) 
-      tabJson.push(jsonString);
-      console.log(tabJson);
-      fs.writeFile('structure.json', tabJson, (err) => {
-        if (err) throw err;
-        console.log('Data written to file');
       });
-      */
-  })
-
-   
-
-    //var content = fs.readFile('./DataStruct.json', (err) => {
-      //if (err) throw err;
-      //var content2 = JSON.parse(content);
-      //var parseJson = JSON.parse(content2.text);
-      //console.log(parseJson);
-    //})
-    //tabJson.push();
-    //console.log(tabJson);
-    
-  /*
-    // destination.txt will be created or overwritten by default.
-    fs.copyFile('./config/DataStruct.json', 'DataStructure.json', (err) => {
-      if (err) throw err;
-      console.log(' ./config/DataStruct.json was copied to DataStructure.json');
     })
-    //let data = JSON.stringify(DataStructure, null, 2);
-    //let data = JSON.stringify(DataStructure, null, 2);
-    //fs.writeFile('structure.json', data, (err) => {
-      //if (err) throw err;
-      //console.log('Data written to file');
-    //});
-    */
-  //console.log('This is after the write call');
-
   })
 
-} 
+  mainWindow.on('uncaughtException', function (error) {
+    // Handle the error
+    console.log(error)
+  })
+
+}
+
 
 app.on('ready', main)
 

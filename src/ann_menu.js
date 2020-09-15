@@ -8,7 +8,6 @@ document.getElementById('DownloadBtn').addEventListener('click', () => {
   ipcRenderer.send('json')
 })
 
-
 // Lorsque l'on clique sur clearBtn le renderer process envoie au main process clear-txt (cf main.js)
 document.getElementById('clearBtn').addEventListener('click', () => {
     alert("All cleared")
