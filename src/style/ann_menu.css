@@ -54,7 +54,7 @@
   margin-left: 5%;
   background-color: white;
   position: center;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 #input {
@@ -63,4 +63,20 @@
   color: black;
   display: block;
   transition: 0.3s;
+}
+
+button {
+  margin-left: 5%
+  transition-duration: 0.4s;
+  border-radius: 10px;
+  padding: 8px 15px;
+  font-size: 12px;
+  background-color: white;
+  color: black;
+  border: 0.5px solid #313536;;
+}
+
+button:hover {
+  background-color: #313536;
+  color: white;
 }
