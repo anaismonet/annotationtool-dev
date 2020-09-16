@@ -111,6 +111,11 @@ function main () {
     mainWindow.send('toClear')
   })
 
+  /* Annotation spécifique */
+  ipcMain.on('text-selection',(event,txt) => {
+    console.log(txt)
+  })
+
   /* ANNOTATION */
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)

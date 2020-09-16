@@ -18,9 +18,10 @@
       <header> </header>
       <aside>
          <button id="WriteBtn" type="button" class="btn">Ecrire mon texte</button>
-          <button id="AnnoterBtn" type="button" class="btn"> Annoter</button>
-          <button id="clearBtn" type="button" class="btn"> Clear it all</button>
-          <button id="DownloadBtn" type="button" class="btn"> Download JSON file</button>
+         <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter</button>
+          <button id="AnnoterBtn" type="button" class="btn">Annoter tout le texte</button>
+          <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
+          <button id="clearBtn" type="button" class="btn">Effacer</button>
           <div id="Inputtxt"></div>
       </aside>
     </div>
@@ -28,3 +29,26 @@
       <script  src="./ann_menu.js"> </script>
    </body>
 </html>
+
+<script text="javascript">
+   //const { ipcRenderer } = require('electron')
+
+   function GetSelectedText(){
+      var selectedText = ''; 
+      if (window.getSelection) { 
+         selectedText = window.getSelection(); 
+      } 
+      else if (document.getSelection) { 
+         selectedText = document.getSelection(); 
+      } 
+      else if (document.selection) { 
+         selectedText = document.selection.createRange().text; 
+      } else return; 
+
+      alert(selectedText)
+      // Send selectedText to main process
+      //console.log(ipcRenderer.send('text-selection', selectedText))
+      //ipcRenderer.send('text-selection', selectedText)
+   }
+
+</script>
