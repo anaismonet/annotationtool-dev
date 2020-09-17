@@ -45,10 +45,9 @@
          selectedText = document.selection.createRange().text; 
       } else return; 
 
-      alert(selectedText)
       // Send selectedText to main process
-      //console.log(ipcRenderer.send('text-selection', selectedText))
-      //ipcRenderer.send('text-selection', selectedText)
+      var textSelected = selectedText.toString()
+      console.log(ipcRenderer.send('text-selection', textSelected))
    }
 
 </script>

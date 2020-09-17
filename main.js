@@ -91,15 +91,42 @@ function main () {
     }
   })
 
+
+  /* Fenêtre annotation spécifique */
+  let annSpecWin 
+
+  ipcMain.on('add-ann-specifique-window', () => {
+    console.log('add-ann-specifique-window')
+    // if annWin does not already exist
+    if (!addWin && !annWin) {
+      // create a new  window
+      annSpecWin = new Window({
+        file: path.join('src', 'annotation_spec.html'),
+        width: 200,
+        height: 200,
+        // close with the main window
+        parent: mainWindow
+      })
+  
+      annSpecWin.once('ready-to-show', () => {
+        annSpecWin.show()
+      })
+      // cleanup
+      annSpecWin.on('closed', () => {
+        annSpecWin = null
+      })
+      }
+  })
+
   // add-text from ann_type_win
   // Lorsque le main process reçoit 'add-text' il ajoute txt dans le fichier JSON textData
   // puis envoie ce fichier à un renderer process (cf ann_menu.js)
 
   ipcMain.on('add-text', (event, txt) => {
-      const updatedText = textData.addinputText(txt).inputs
-      console.log(updatedText)
-      console.log(DataStructure.addText(txt).text)
-      console.log(mainWindow.send('inputstoPrint', updatedText))
+    const updatedText = textData.addinputText(txt).inputs
+    console.log(updatedText)
+    console.log(DataStructure.addText(txt).text)
+    console.log(mainWindow.send('inputstoPrint', updatedText))
   })
 
   // clear-txt from txt list window
@@ -111,16 +138,24 @@ function main () {
     mainWindow.send('toClear')
   })
 
-  /* Annotation spécifique */
+  /* ANNOTATION SPECIFIQUE */
+ 
   ipcMain.on('text-selection',(event,txt) => {
-    console.log(txt)
+
+    /* Une fois qu'on a reçu l'annotation de annotation_spec.js */
+    ipcMain.on('text-selection-annotation',(event,annotation) => {
+      console.log('icpmain in ipcmain')
+      console.log(txt)
+      console.log(annotation)
+    })
   })
 
-  /* ANNOTATION */
+  /* ANNOTATION DE TOUT LE TEXTE */
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
+    // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
+    
   })
-
 
   ipcMain.on('json', (event) => {
 

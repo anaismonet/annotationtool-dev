@@ -4,13 +4,13 @@ const { ipcRenderer } = require('electron')
 
 // Lorsque l'on clique sur DownloadBtn le renderer process envoie au main process json (cf main.js)
 document.getElementById('DownloadBtn').addEventListener('click', () => {
-  alert('Downloaded')
+  alert('JSON téléchargé')
   ipcRenderer.send('json')
 })
 
 // Lorsque l'on clique sur clearBtn le renderer process envoie au main process clear-txt (cf main.js)
 document.getElementById('clearBtn').addEventListener('click', () => {
-    alert("All cleared")
+    alert("Texte effacé")
     ipcRenderer.send('clear-txt')
   })
 
@@ -18,6 +18,13 @@ document.getElementById('clearBtn').addEventListener('click', () => {
 // qui sera la fenêtre pour annoter
 document.getElementById('AnnoterBtn').addEventListener('click', () => {
     ipcRenderer.send('add-ann-window')
+  })
+
+/* Annotation d'une partie de texte */
+document.getElementById('AnnoterPartBtn').addEventListener('click', () => {
+  
+  console.log(ipcRenderer.send('add-ann-specifique-window'))
+
   })
 
 // Lorsque l'on clique sur AnnoterBtn le renderer process envoie au main process add-window
