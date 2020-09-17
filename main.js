@@ -154,7 +154,40 @@ function main () {
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
-    
+
+    fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
+      if (err) {
+          console.log("File read failed:", err)
+          return
+      }
+      const jsonString2 = JSON.parse(jsonString);
+      console.log('jsonString2')
+      console.log(jsonString2)
+
+      /* Ecrire ligne de code qui écrit DataStorage si il n'existe pas et l'écrire avec [] */
+
+      fs.readFile('DataStorage.json', 'utf8', function (err, data) {
+        if (err) {
+            console.log(err)
+        } else {
+            const file = JSON.parse(data);
+            console.log('file')
+            console.log(file)
+            file.push(jsonString2);
+            const json = JSON.stringify(file);
+            console.log('json')
+            console.log(json)
+
+            fs.writeFile('DataStorage.json', json, 'utf8', function(err){
+                  if(err){
+                        console.log(err);
+                  } else {
+                        console.log('Data written to file')
+                  }});
+        }
+      });
+
+    })
   })
 
   ipcMain.on('json', (event) => {
@@ -176,7 +209,7 @@ function main () {
                 console.log(err)
             } else {
                 const file = JSON.parse(data);
-                file.push(jsonString2);
+                file.push({jsonString2});
                 const json = JSON.stringify(file);
 
                 fs.writeFile('DataStructure.json', json, 'utf8', function(err){
