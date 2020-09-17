@@ -7,6 +7,7 @@ const DataStore = require('./DataStore')
 const fs = require('fs')
 
 
+
 // Permet de sauvegarde notre json le bon dossier
 app.setPath("userData", __dirname + "/config")
 
@@ -111,11 +112,22 @@ function main () {
     mainWindow.send('toClear')
   })
 
+  /* Annotation spécifique */
+  ipcMain.on('text-selection',(event,txt) => {
+    console.log(txt)
+  })
+
   /* ANNOTATION */
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
   })
 
+  /* Importer texte */
+
+  ipcMain.on('add-txt', (event, data) => {
+    mainWindow.send('inputstoPrint', textData.addinputText(data).inputs)
+    DataStructure.addText(data).text
+  })
 
   ipcMain.on('json', (event) => {
 
