@@ -147,14 +147,32 @@ function main () {
       console.log('icpmain in ipcmain')
       console.log(txt)
       console.log(annotation)
+
+      const updatedText = DataStructure.addText(txt).inputs
+      console.log(updatedText)
+      console.log(DataStructure.addType(annotation).type)
+      
+      // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
+      fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
+        if (err) {
+            console.log("File read failed:", err)
+            return
+        }
+        const jsonString2 = JSON.parse(jsonString);
+        console.log('jsonString2')
+        console.log(jsonString2)
+        
+        openJsonAdd('./config/DataStorage.json', jsonString2)
+      })
+
     })
   })
 
   /* ANNOTATION DE TOUT LE TEXTE */
   ipcMain.on('add-annotation', (event, annotation ) => {
     console.log(DataStructure.addType(annotation).type)
+  
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
-
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
           console.log("File read failed:", err)
@@ -164,31 +182,63 @@ function main () {
       console.log('jsonString2')
       console.log(jsonString2)
 
-      /* Ecrire ligne de code qui écrit DataStorage si il n'existe pas et l'écrire avec [] */
-
-      fs.readFile('DataStorage.json', 'utf8', function (err, data) {
-        if (err) {
-            console.log(err)
-        } else {
-            const file = JSON.parse(data);
-            console.log('file')
-            console.log(file)
-            file.push(jsonString2);
-            const json = JSON.stringify(file);
-            console.log('json')
-            console.log(json)
-
-            fs.writeFile('DataStorage.json', json, 'utf8', function(err){
-                  if(err){
-                        console.log(err);
-                  } else {
-                        console.log('Data written to file')
-                  }});
-        }
-      });
-
+      openJsonAdd('./config/DataStorage.json', jsonString2)
     })
   })
+  /* Fonction qui ouvre DataStorage pour ajouter les annotations */
+
+  function openJsonAdd(filename, jsonString2) {
+    // Ouvre DataStorage.json qui va contenir toutes les annotations
+    fs.open(filename,'r+', function (err,fd ){
+      
+      if (err){
+        // Si n'existe pas, il est crée avec le contenu '[]'
+        fs.writeFile(filename, '[]', 'utf8', function(err){
+          if (err) {
+            console.log(err)
+          } else {
+            console.log("DataStorage.json successfully created")
+            addObjectJson(filename,jsonString2)
+          }
+        });
+
+      } else {
+        // Il faudra laisser la possibilité de recharger le travail précédent 
+        console.log("DataStorage.json already exists")
+        addObjectJson(filename,jsonString2)
+      }
+    });
+
+  }
+
+  
+  /* Fonction qui ajoute les objets JSON dans un fichier json */
+
+  function addObjectJson(filename,jsonString2) {
+    // Ouvre filename en écriture + lecture
+    fs.readFile(filename, 'utf8', function (err, data) {
+      if (err) {
+          console.log(err)
+      } else {
+        // traitement de l'objet à ajouter
+        const file = JSON.parse(data);
+        console.log('file')
+        console.log(file)
+        file.push(jsonString2);
+        const json = JSON.stringify(file);
+        console.log('json')
+        console.log(json)
+
+        fs.writeFile(filename, json, 'utf8', function(err){
+          if(err){
+                console.log(err);
+          } else {
+                console.log('Data written to file')
+          }});
+      }
+    });
+  };
+
 
   ipcMain.on('json', (event) => {
 
@@ -208,16 +258,16 @@ function main () {
             if (err) {
                 console.log(err)
             } else {
-                const file = JSON.parse(data);
-                file.push({jsonString2});
-                const json = JSON.stringify(file);
+              const file = JSON.parse(data);
+              file.push({jsonString2});
+              const json = JSON.stringify(file);
 
-                fs.writeFile('DataStructure.json', json, 'utf8', function(err){
-                     if(err){
-                           console.log(err);
-                     } else {
-                           console.log('Data written to file')
-                     }});
+              fs.writeFile('DataStructure.json', json, 'utf8', function(err){
+                if(err){
+                      console.log(err);
+                } else {
+                      console.log('Data written to file')
+                }});
             }
          });
         }
