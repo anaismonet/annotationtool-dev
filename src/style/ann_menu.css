@@ -1,3 +1,4 @@
+ 
 html {
   height: 100%;
 }
@@ -10,7 +11,7 @@ body{
   margin: 0;
 }
 #entete {
-  background-color:#FF9900;
+  background-color: #313536;
   height: 20px;
 
 }
@@ -22,12 +23,12 @@ body{
   float:left;
   height: 100%;
   width:200px;
-  background-color:#FF3366;
+  background-color: #313536;
 }
 #contenu {
   height: 100%;
   margin-left:200px;
-  background-color:#9966FF;
+  background-color:gray;
 }
 
 
@@ -42,7 +43,7 @@ header {
     padding-left: 5px;
     text-decoration: none;
     font-size: 15px;
-    color: white;
+    color: black;
     transition: 0.3s;
   }
 

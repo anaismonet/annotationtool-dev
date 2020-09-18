@@ -6,7 +6,6 @@ const defaultProps = {
     width: 700,
     height: 600,
     show: false,
-    backgroundColor: '#313536',
     
     // update for electron V5+
     webPreferences: {
