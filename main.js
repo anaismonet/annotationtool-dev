@@ -211,7 +211,6 @@ function main () {
 
   }
 
-  
   /* Fonction qui ajoute les objets JSON dans un fichier json */
 
   function addObjectJson(filename,jsonString2) {
@@ -242,38 +241,28 @@ function main () {
 
   ipcMain.on('json', (event) => {
 
-    fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
+    fs.readFile('./config/DataStorage.json', 'utf8', (err, jsonString) => {
       if (err) {
-          console.log("File read failed:", err)
-          return
+        console.log("File read failed:", err)
       }
-      const jsonString2 = JSON.parse(jsonString);
-      var content = "[]"
-      fs.writeFile('DataStructure.json', content, (err) => {
-        if(err){
-            alert("An error ocurred creating the file "+ err.message)
-        }
-        else {
-          fs.readFile('DataStructure.json', 'utf8', function (err, data) {
-            if (err) {
-                console.log(err)
-            } else {
-              const file = JSON.parse(data);
-              file.push({jsonString2});
-              const json = JSON.stringify(file);
-
-              fs.writeFile('DataStructure.json', json, 'utf8', function(err){
-                if(err){
-                      console.log(err);
-                } else {
-                      console.log('Data written to file')
-                }});
-            }
-         });
-        }
-      });
+      else {
+        console.log('tentative de téléchargement')
+        const jsonString2 = JSON.parse(jsonString);
+        console.log(jsonString2)
+        const json = JSON.stringify(jsonString2)
+        console.log(json)
+        
+        fs.writeFile('DataStructure.json', json, (err) => {
+          if(err){
+              alert("An error ocurred creating the file "+ err.message)
+          }
+          else {
+            console.log("Fichier écrit")
+          }
+        });
+      }
     })
-  })
+  });
 
   mainWindow.on('uncaughtException', function (error) {
     // Handle the error
@@ -281,7 +270,6 @@ function main () {
   })
 
 }
-
 
 app.on('ready', main)
 
