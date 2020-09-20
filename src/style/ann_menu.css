@@ -1,45 +1,58 @@
-.app {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 10fr 45px;
-    grid-template-columns: 200px 1fr;
-  }
+html {
+  height: 100%;
+}
+body{
+  margin: 0;
+  height: 100%;
+}
+#entete, #menu, #contenu, #footer{
+  padding:1px 0;
+  margin: 0;
+}
+#entete {
+  background-color: #5A8060;
+  height: 20px;
+  color:white;
 
-  .left {
-    width: 30%;
-    height: 100%;
-    float: left;
-    background-color: #313536;
-    color : white;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-  }
+}
 
-  header {
+#top {
+  color: #F1F1F1;
+}
+
+#top:hover {
+  font-weight: bold;
+}
+
+#main {
+  height: 100%;
+  margin:0;
+}
+#menu  {
+  float:left;
+  height: 100%;
+  width:200px;
+  background-color: #B5C7B8;
+}
+#contenu {
+  height: 100%;
+  margin-left:200px;
+  background-color:#F5F5F5;
+}
+
+
+header {
     color : white;
     grid-column: 1/-1;
   }
 
-  aside {
-    height: 100%;
-    width : 100%;
-    background-color: #818181;
-    color : white;
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 30%;
-  }
-
 
  a {
-    padding: 4px 4px 4px 4px;
+    padding-top: 12.5px;
+    padding-left: 5px;
     text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
+    font-size: 15px;
+    color: black;
     transition: 0.3s;
   }
 
@@ -50,9 +63,9 @@
 #Inputtxt {
   margin-top: 4%;
   height: 85%;
-  width: 60%;
-  margin-left: 5%;
-  background-color: white;
+  width: 80%;
+  margin-left: 10%;
+  background-color:white;
   position: center;
   overflow-y: auto;
 }
@@ -65,18 +78,24 @@
   transition: 0.3s;
 }
 
+#WriteBtn {
+  margin-top: 10%;
+}
+
 button {
-  margin-left: 5%
+  margin-left: 15%;
+  margin-top: 4%;
   transition-duration: 0.4s;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 8px 15px;
   font-size: 12px;
-  background-color: white;
+  background-color: #F1F1F1;
   color: black;
-  border: 0.5px solid #313536;;
+  border: 0.3px solid #5A8060;
+  width:70%;
 }
 
 button:hover {
-  background-color: #313536;
+  background-color: #5A8060;
   color: white;
 }

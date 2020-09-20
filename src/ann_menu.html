@@ -8,23 +8,27 @@
    </head>
 
    <body>
-      <div class="left">
-         <a href="./about.html">About </a>
-         <a href="./tutorial.html">Tutorials</a>
+      <div id="entete">
+         <a id="top" href="../index.html"> Home </a>
+         <a id="top" href="./about.html">About </a>
+         <a id="top" href="./tutorial.html">Tutorials</a>
 
-    </div>
+      </div>
+      <div id="main">
+         <div id="menu">
+            <button id="WriteBtn" type="button" class="btn">Ecrire mon texte</button>
+            <button id="AddtxtBtn" type="button" class="btn">Importer texte</button>
+            <button id="AnnoterBtn" type="button" class="btn">Annoter tout le texte</button>
+            <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter</button>
+            <button id="clearBtn" type="button" class="btn">Effacer</button>
+            <button id="Refresh" type="button" class="btn">Reprendre l'ancien travail</button>
+            <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
+         </div>
+         <div id="contenu">
+            <div id="Inputtxt"></div>
+        </div>
 
-    <div class="app">
-      <header> </header>
-      <aside>
-         <button id="WriteBtn" type="button" class="btn">Ecrire mon texte</button>
-         <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter</button>
-          <button id="AnnoterBtn" type="button" class="btn">Annoter tout le texte</button>
-          <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
-          <button id="clearBtn" type="button" class="btn">Effacer</button>
-          <div id="Inputtxt"></div>
-      </aside>
-    </div>
+      </div>
       <script src = "./menu.js"></script>
       <script  src="./ann_menu.js"> </script>
    </body>
@@ -34,16 +38,16 @@
    //const { ipcRenderer } = require('electron')
 
    function GetSelectedText(){
-      var selectedText = ''; 
-      if (window.getSelection) { 
-         selectedText = window.getSelection(); 
-      } 
-      else if (document.getSelection) { 
-         selectedText = document.getSelection(); 
-      } 
-      else if (document.selection) { 
-         selectedText = document.selection.createRange().text; 
-      } else return; 
+      var selectedText = '';
+      if (window.getSelection) {
+         selectedText = window.getSelection();
+      }
+      else if (document.getSelection) {
+         selectedText = document.getSelection();
+      }
+      else if (document.selection) {
+         selectedText = document.selection.createRange().text;
+      } else return;
 
       // Send selectedText to main process
       var textSelected = selectedText.toString()
