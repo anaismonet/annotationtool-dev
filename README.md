@@ -9,7 +9,7 @@ Then use the command:
 npm install
 ```
 
-## Lauch
+## Launch
 To launch the application use the command:
 ```bash
 npm start
