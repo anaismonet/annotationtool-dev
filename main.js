@@ -50,7 +50,7 @@ function main() {
       // create a new window
       addWin = new Window({
         file: path.join('src', 'ann_type.html'),
-        width: 400,
+        width: 450,
         height: 400,
         // close with the main window
         parent: mainWindow
@@ -164,7 +164,7 @@ ipcMain.on('add-txt', (event, data) => {
       console.log(updatedText)
       console.log(DataStructure.addType(annotation).type)
 
-      // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
+      // Ajouter l'objet JSON dans un fichier sauvegarde dans config
       fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
         if (err) {
           console.log("File read failed:", err)
@@ -184,7 +184,7 @@ ipcMain.on('add-txt', (event, data) => {
   ipcMain.on('add-annotation', (event, annotation) => {
     console.log(DataStructure.addType(annotation).type)
 
-    // Ajouter l'objet JSON dans un fichier sauvegarde dans config 
+    // Ajouter l'objet JSON dans un fichier sauvegarde dans config
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
         console.log("File read failed:", err)
@@ -215,7 +215,7 @@ ipcMain.on('add-txt', (event, data) => {
         });
 
       } else {
-        // Il faudra laisser la possibilité de recharger le travail précédent 
+        // Il faudra laisser la possibilité de recharger le travail précédent
         console.log("DataStorage.json already exists")
         addObjectJson(filename, jsonString2)
       }
