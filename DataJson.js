@@ -29,7 +29,8 @@ class DataJson extends Store {
 
   /* Annotation */
   addType (inputText) {
-    this.type = [ ...this.type, inputText ]
+    //this.type = [ ...this.type, inputText ]
+    this.type = inputText
     return this.saveType()
   }
 

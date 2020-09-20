@@ -12,7 +12,7 @@ body {
     grid-template-rows: 10fr 45px;
     grid-template-columns: 200px 1fr;
   }
-  
+
   header {
     height: 100%;
     width : 100%;
@@ -23,11 +23,11 @@ body {
     top: 0; /* Stay at the top */
     left: 0;
   }
-  
+
   aside {
     height: 100%;
     width : 100%;
-    background-color: #818181;
+    background-color: #B5C7B8;
     color : white;
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
@@ -44,11 +44,13 @@ body {
     transition: 0.3s;
   }
 
+
   .form-input {
-    height: 30%;
+    height: 50%;
     width : 80%;
     font-size:14pt;
   }
+  
 
   .form-input2 {
     height: 20%;
