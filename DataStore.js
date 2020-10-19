@@ -23,7 +23,7 @@ class DataStore extends Store {
   getinputs () {
     // set object's inputs to inputs in JSON file
     this.inputs = this.get('inputs') || []
-    return this
+    return this.inputs
   }
 
   addinputText (inputText) {
