@@ -329,13 +329,6 @@ ipcMain.on('add-txt', (event, data) => {
     });
   };
 
-  /*
-  function fonctionLucas(partieToAnn, category){
-    list_positions = [["B1","E1",category, partieToAnn],["B","E",category, partieToAnn]];
-    return list_positions
-  }
-  */
-
   function recherche(motachercher, categorie) {
     var textentier = textData.getinputs()[0];
     var taille = motachercher.length;
