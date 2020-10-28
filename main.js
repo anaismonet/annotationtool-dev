@@ -188,6 +188,15 @@ ipcMain.on('add-txt', (event, data) => {
         openJsonAddAnnSpec('./config/DataStorage.json', jsonString2)
 
         /* Sinon on annote seulement la sélection et il faut trouver la position de ce qu'on sélectionne exactement */
+
+        /*
+        On peut modifier la fonction openJsonAddAnnSPec en lui ajoutant un argument annotateAll (bool)
+        puis dans la fonction  addObjectJsonAnnSpec on ajoute aussi annotateAll 
+        Si True : list_positions = recherche() (fonction Lucas)
+        Sinon : list_positions = nouvelle_fonction()
+        openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll)
+        }
+        */
       })
 
     })
@@ -296,9 +305,6 @@ ipcMain.on('add-txt', (event, data) => {
 
     /* fonctionLucas est à faire */
     list_positions = recherche(jsonAnnSpec['text'],jsonAnnSpec['type']);
-    console.log("list_positions");
-    console.log(list_positions);
-
     console.log("list_positions");
     console.log(list_positions);
 
