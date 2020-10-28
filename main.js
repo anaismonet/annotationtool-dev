@@ -152,13 +152,16 @@ ipcMain.on('add-txt', (event, data) => {
 
   /* ANNOTATION SPECIFIQUE */
 
-  ipcMain.on('text-selection', (event, txt) => {
-
+  ipcMain.on('text-selection', (event, txt,range) => {
+    console.log("Texte sélectionné")
+    console.log(txt)
+    console.log(range)
     /* Une fois qu'on a reçu l'annotation de annotation_spec.js */
-    ipcMain.on('text-selection-annotation', (event, annotation) => {
+    ipcMain.on('text-selection-annotation', (event, annotation, annotateAll) => {
       console.log('icpmain in ipcmain')
       console.log(txt)
       console.log(annotation)
+      console.log(annotateAll);
 
       const updatedText = DataStructure.addText(txt).inputs
       console.log(updatedText)
@@ -181,7 +184,10 @@ ipcMain.on('add-txt', (event, data) => {
         "entities": [(B1,E1,annotation),...,(Bn,En,annotation)]} avec n le nombre d'occurences de txt dans textMain
         Pour trouver B et E, on parse tout text en cherchant txt
         */
+       /* if annotateAll on appelle la fonction de Lucas */
         openJsonAddAnnSpec('./config/DataStorage.json', jsonString2)
+
+        /* Sinon on annote seulement la sélection et il faut trouver la position de ce qu'on sélectionne exactement */
       })
 
     })

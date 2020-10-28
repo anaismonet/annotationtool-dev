@@ -23,8 +23,8 @@ class DataStore extends Store {
   }
 
   addinputText (inputText) {
-    //this.inputs = [ ...this.inputs, inputText ]
-    this.inputs = [ inputText ]
+    this.inputs = [ ...this.inputs, inputText ]
+    //this.inputs = [ inputText ]
     return this.saveinputs()
   }
 

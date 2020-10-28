@@ -64,11 +64,11 @@ document.getElementById('AddtxtBtn').addEventListener('click', () => {
 ipcRenderer.on('inputstoPrint', (event, txt) => {
       // get the Inputtxt id=Inputtxt
       const Inputtxt = document.getElementById('Inputtxt')
-
+      
       // create html string
       const txtItems = txt.reduce((html, text) => {
         html += `<a id="input" class="input-txt">${text}</a>`
-
+        //html += `<textarea id="input" class="input-txt" readonly>${text}</textarea>`
         return html
       }, '')
 
