@@ -41,10 +41,11 @@
    function GetSelectedText(){
       
       var selectedText = '';
+      var range = [];
       
       if (window.getSelection) {
          selectedText = window.getSelection();
-         var range = selectedText.getRangeAt(0).startOffset;
+         range.push(selectedText.getRangeAt(0).startOffset,selectedText.getRangeAt(0).endOffset) ;
       }
       
       var textSelected = selectedText.toString();

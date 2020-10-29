@@ -182,21 +182,10 @@ ipcMain.on('add-txt', (event, data) => {
         {"text": TextMain.inputs[0], 
         "type" : "", (on met un type vide pour savoir qu'on annote spécifiquement lors de la recherche d'objets dans DataStorage)
         "entities": [(B1,E1,annotation),...,(Bn,En,annotation)]} avec n le nombre d'occurences de txt dans textMain
-        Pour trouver B et E, on parse tout text en cherchant txt
         */
-       /* if annotateAll on appelle la fonction de Lucas */
-        openJsonAddAnnSpec('./config/DataStorage.json', jsonString2)
 
-        /* Sinon on annote seulement la sélection et il faut trouver la position de ce qu'on sélectionne exactement */
+        openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range)
 
-        /*
-        On peut modifier la fonction openJsonAddAnnSPec en lui ajoutant un argument annotateAll (bool)
-        puis dans la fonction  addObjectJsonAnnSpec on ajoute aussi annotateAll 
-        Si True : list_positions = recherche() (fonction Lucas)
-        Sinon : list_positions = nouvelle_fonction()
-        openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll)
-        }
-        */
       })
 
     })
@@ -207,16 +196,30 @@ ipcMain.on('add-txt', (event, data) => {
     console.log(DataStructure.addType(annotation).type)
 
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
-    fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
+    fs.readFile('./config/TextMain.json', 'utf8', (err, textmain) => {
       if (err) {
-        console.log("File read failed:", err)
+        console.log("TextMain.json read failed:", err)
         return
       }
-      const jsonString2 = JSON.parse(jsonString);
-      console.log('jsonString2')
-      console.log(jsonString2)
 
-      openJsonAdd('./config/DataStorage.json', jsonString2)
+      fs.readFile('./config/DataStruct.json','utf8', (err,jsonString) => {
+        if(err){
+          console.log("DataStruct.json (reading fail) : ", err)
+        } else {
+          /* textmain contient tout le texte à annoter */
+          const textMain = JSON.parse(textmain);
+          /* jsonString contient l'annotation */
+          const dataStruct = JSON.parse(jsonString);
+
+          var jsonString2 = {'text': textMain['inputs'][0], "type": dataStruct['type']}
+
+          console.log('Objet json qui va être ajouté à DataStorage.json')
+          console.log(jsonString2)
+  
+          openJsonAdd('./config/DataStorage.json', jsonString2)
+  
+        }
+      })
     })
   })
   /* Fonction qui ouvre DataStorage pour ajouter les annotations */
@@ -276,7 +279,7 @@ ipcMain.on('add-txt', (event, data) => {
   };
 
   /* Écriture du json avec annotation spécifique */
-  function openJsonAddAnnSpec(filename, jsonString2) {
+  function openJsonAddAnnSpec(filename, jsonString2, annotateAll,range) {
     // Ouvre DataStorage.json qui va contenir toutes les annotations
     fs.open(filename, 'r+', function (err, fd) {
 
@@ -287,24 +290,28 @@ ipcMain.on('add-txt', (event, data) => {
             console.log(err)
           } else {
             console.log("DataStorage.json successfully created")
-            addObjectJsonAnnSpec(filename, jsonString2)
+            addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range)
           }
         });
 
       } else {
         // Il faudra laisser la possibilité de recharger le travail précédent
         console.log("DataStorage.json already exists")
-        addObjectJsonAnnSpec(filename, jsonString2)
+        addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range)
       }
     });
 
   }
 
   /* Ajoute les objets JSON concernant les annotations spécifiques dans DataStorage.json */
-  function addObjectJsonAnnSpec(filename, jsonAnnSpec) {
-
-    /* fonctionLucas est à faire */
-    list_positions = recherche(jsonAnnSpec['text'],jsonAnnSpec['type']);
+  function addObjectJsonAnnSpec(filename, jsonAnnSpec, annotateAll,range) {
+    
+    if (annotateAll) {
+      list_positions = recherche(jsonAnnSpec['text'],jsonAnnSpec['type']);
+    } else {
+      list_positions = [[range[0],range[1],jsonAnnSpec['type']]]
+    }
+    
     console.log("list_positions");
     console.log(list_positions);
 

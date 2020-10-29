@@ -1,1 +1,1 @@
-[{"text":"Bonjour je souhaiterais annoter ce petit texte. Même si ce texte est court.","entities":[[41,46,"annSpecTexte"],[59,63,"annSpecTexte"]],"type":["annotationGlobale"]}]
+[{"text":"test annotation tout le texte","entities":[[5,15,"ann1"],[24,29,"txt1"],[16,21,"tout1"],[5,15,"annSpec1"]],"type":["test1","annAll2"]}]
