@@ -46,10 +46,13 @@
       if (window.getSelection) {
          selectedText = window.getSelection();
          range.push(selectedText.getRangeAt(0).startOffset,selectedText.getRangeAt(0).endOffset) ;
+         var rangeToSelect = document.createRange();
+         rangeToSelect.selectNode(selectedText.anchorNode);
+         var objectText = rangeToSelect.toString();
       }
       
       var textSelected = selectedText.toString();
-      console.log(ipcRenderer.send('text-selection', textSelected,range))
+      console.log(ipcRenderer.send('text-selection', textSelected,range,objectText ))
    }
  
 </script>
