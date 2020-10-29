@@ -42,6 +42,8 @@
       
       var selectedText = '';
       var range = [];
+
+      let element = document.createElement("mark")
       
       if (window.getSelection) {
          selectedText = window.getSelection();
@@ -49,6 +51,7 @@
          var rangeToSelect = document.createRange();
          rangeToSelect.selectNode(selectedText.anchorNode);
          var objectText = rangeToSelect.toString();
+         window.getSelection().getRangeAt(0).surroundContents(element);
       }
       
       var textSelected = selectedText.toString();
