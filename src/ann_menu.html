@@ -37,6 +37,17 @@
 </html>
 
 <script text="javascript">
+   
+   function changeClass(elem){
+      if (elem.className == 'input-txt'){
+         elem.className = "input-txt-toggle";
+         var elt = elem.textContent;
+         ipcRenderer.send('annotate-object',elt);
+      }
+      else{
+         elem.className = 'input-txt';
+      }
+   }
 
    function GetSelectedText(){
       

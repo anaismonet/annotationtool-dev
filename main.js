@@ -137,6 +137,7 @@ function main() {
 
 // add-txt ajoute le texte venant du fichier
 ipcMain.on('add-txt', (event, data) => {
+  console.log(data)
   mainWindow.send('inputstoPrint', textData.addinputText(data).inputs)
   DataStructure.addText(data).text
 })
@@ -150,40 +151,41 @@ ipcMain.on('add-txt', (event, data) => {
     mainWindow.send('toClear')
   })
 
- 
 
-  /* ANNOTATION DE TOUT LE TEXTE */
+/* ANNOTATION DE TOUT LE TEXTE */
+
+ipcMain.on('annotate-object',(event,elt) => {
+  console.log('click');
+  console.log(elt);
+
   ipcMain.on('add-annotation', (event, annotation) => {
     console.log(DataStructure.addType(annotation).type)
 
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
-    fs.readFile('./config/TextMain.json', 'utf8', (err, textmain) => {
-      if (err) {
-        console.log("TextMain.json read failed:", err)
-        return
+    
+    fs.readFile('./config/DataStruct.json','utf8', (err,jsonString) => {
+      if(err){
+        console.log("DataStruct.json (reading fail) : ", err)
+      } else {
+        /* textmain contient tout le texte à annoter */
+        const textMain = elt;
+        /* jsonString contient l'annotation */
+        const dataStruct = JSON.parse(jsonString);
+
+        /* Fonctionnera avec un seul objet pour le moment */
+        var jsonString2 = {'text': textMain, "type": dataStruct['type']}
+
+        console.log('Objet json qui va être ajouté à DataStorage.json')
+        console.log(jsonString2)
+
+        openJsonAdd('./config/DataStorage.json', jsonString2)
+
       }
-
-      fs.readFile('./config/DataStruct.json','utf8', (err,jsonString) => {
-        if(err){
-          console.log("DataStruct.json (reading fail) : ", err)
-        } else {
-          /* textmain contient tout le texte à annoter */
-          const textMain = JSON.parse(textmain);
-          /* jsonString contient l'annotation */
-          const dataStruct = JSON.parse(jsonString);
-
-          /* Fonctionnera avec un seul objet pour le moment */
-          var jsonString2 = {'text': textMain['inputs'][0], "type": dataStruct['type']}
-
-          console.log('Objet json qui va être ajouté à DataStorage.json')
-          console.log(jsonString2)
-  
-          openJsonAdd('./config/DataStorage.json', jsonString2)
-  
-        }
-      })
     })
   })
+})
+
+
   /* Fonction qui ouvre DataStorage pour ajouter les annotations */
 
   function openJsonAdd(filename, jsonString2) {
@@ -268,9 +270,9 @@ ipcMain.on('add-txt', (event, data) => {
       console.log('jsonString2')
       console.log(jsonString2)
 
-      /* 
+      /*
       Appelle la fonction pour l'annotation spécifique qui fera le nouvel objet
-      {"text": TextMain.inputs[0], 
+      {"text": TextMain.inputs[0],
       "type" : "", (on met un type vide pour savoir qu'on annote spécifiquement lors de la recherche d'objets dans DataStorage)
       "entities": [(B1,E1,annotation),...,(Bn,En,annotation)]} avec n le nombre d'occurences de txt dans textMain
       */
@@ -308,13 +310,13 @@ ipcMain.on('add-txt', (event, data) => {
 
   /* Ajoute les objets JSON concernant les annotations spécifiques dans DataStorage.json */
   function addObjectJsonAnnSpec(filename, jsonAnnSpec, annotateAll,range,objectText) {
-    
+
     if (annotateAll) {
       list_positions = recherche(jsonAnnSpec['text'],jsonAnnSpec['type'],objectText);
     } else {
       list_positions = [[range[0],range[1],jsonAnnSpec['type']]]
     }
-    
+
     console.log("list_positions");
     console.log(list_positions);
 
@@ -419,7 +421,7 @@ ipcMain.on('add-txt', (event, data) => {
             /* Parsing de DataStorage.json fichier de sauvegarde de toutes les annotations et le texte leur étant associé */
             const contentDataStorage = JSON.parse(jsonString);
             console.log(contentDataStorage);
-            
+
             /* On récupère le texte à annoter qui est dans TextMain.json */
             console.log("textToAnn");
             //var textToAnn = textData.getinputs()[0];
@@ -427,7 +429,7 @@ ipcMain.on('add-txt', (event, data) => {
             console.log(textToAnn);
 
             var jsonToDownload = [];
-            
+
 
             /* Recherche de toutes les annotations liées au texte */
             for(var l = 0; l < textToAnn.length; l++){
@@ -435,9 +437,9 @@ ipcMain.on('add-txt', (event, data) => {
               var type = [];
               for(var i = 0; i< contentDataStorage.length ; i++){
                 var found = 0;
-  
+
                 if (textToAnn[l].localeCompare(contentDataStorage[i]['text']) == 0){
-              
+
                   /* Si Annotation spécifique, on sait que type est vide */
                   if( contentDataStorage[i]['type'] == ''){
                     entities = entities.concat(contentDataStorage[i]['entities']);
@@ -458,18 +460,18 @@ ipcMain.on('add-txt', (event, data) => {
                         type.push(contentDataStorage[i]['type']);
                       }
                     }
-                  
+
                   }
                 };
-                
-  
+
+
               };
 
               var objet = {"text" : textToAnn[l], "entities" : entities, "type" : type};
               jsonToDownload.push(objet);
 
             };
-            
+
             console.log('Objet final');
             console.log(jsonToDownload);
 
