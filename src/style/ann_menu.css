@@ -3,7 +3,8 @@ html {
 }
 body{
   margin: 0;
-  height: 100%;
+  height: 600px;
+  width: 1000px;
 }
 #entete, #menu, #contenu, #footer{
   padding:1px 0;
@@ -13,8 +14,9 @@ body{
   background-color: #5A8060;
   height: 20px;
   color:white;
-
 }
+
+
 
 #top {
   color: #F1F1F1;
@@ -40,10 +42,9 @@ body{
   background-color:#F5F5F5;
 }
 
-
 header {
-    color : white;
-    grid-column: 1/-1;
+  color : white;
+  grid-column: 1/-1;
   }
 
 
@@ -70,12 +71,13 @@ a.input-txt:hover {
 }
 
 #Inputtxt {
-  margin-top: 4%;
-  height: 85%;
-  width: 80%;
-  margin-left: 10%;
+  margin-top: 2%;
+  height: 96%;
+  width: 70%;
+  margin-left: 2%;
+  margin-right: 2%;
   background-color:white;
-  position: center;
+  display: inline-block;
   overflow-y: auto;
 }
 
@@ -108,4 +110,28 @@ button {
 button:hover {
   background-color: #5A8060;
   color: white;
+}
+
+#annotation {
+  margin-top: 2%;
+  height: 96%;
+  width: 24%;
+  background-color:white;
+  margin-right: 2%;
+}
+
+#ent {
+  background-color: #B5C7B8;
+  height: 3%;
+  width: 100%;
+  color : white;
+  text-align: center;
+}
+
+.test {
+  float: left;
+}
+
+.search {
+  display: block;
 }

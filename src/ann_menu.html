@@ -25,8 +25,16 @@
             <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
          </div>
          <div id="contenu">
-            <div id="Inputtxt">
-               
+            <div class = "test" id="Inputtxt">
+
+            </div>
+            <div class = "test" id="annotation">
+               <div class = "search" id="ent">
+                 Annotations
+               </div>
+               <div class = "search" id="ann-list">
+               </div>
+
             </div>
         </div>
 
@@ -37,7 +45,7 @@
 </html>
 
 <script text="javascript">
-   
+
    function changeClass(elem){
       if (elem.className == 'input-txt'){
          elem.className = "input-txt-toggle";
@@ -50,12 +58,12 @@
    }
 
    function GetSelectedText(){
-      
+
       var selectedText = '';
       var range = [];
 
       let element = document.createElement("mark")
-      
+
       if (window.getSelection) {
          selectedText = window.getSelection();
          range.push(selectedText.getRangeAt(0).startOffset,selectedText.getRangeAt(0).endOffset) ;
@@ -64,9 +72,9 @@
          var objectText = rangeToSelect.toString();
          window.getSelection().getRangeAt(0).surroundContents(element);
       }
-      
+
       var textSelected = selectedText.toString();
       console.log(ipcRenderer.send('text-selection', textSelected,range,objectText ))
    }
- 
+
 </script>
