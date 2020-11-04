@@ -19,7 +19,7 @@
             <button id="WriteBtn" type="button" class="btn">Ecrire mon texte</button>
             <button id="AddtxtBtn" type="button" class="btn">Importer texte</button>
             <button id="AnnoterBtn" type="button" class="btn">Annoter tout le texte</button>
-            <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter</button>
+            <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter entité</button>
             <button id="clearBtn" type="button" class="btn">Effacer</button>
             <button id="Refresh" type="button" class="btn">Reprendre l'ancien travail</button>
             <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
@@ -64,20 +64,32 @@
 
       var selectedText = '';
       var range = [];
-
+      var start = 0;
+      var end = 0;
       let element = document.createElement("mark")
 
       if (window.getSelection) {
          selectedText = window.getSelection();
-         range.push(selectedText.getRangeAt(0).startOffset,selectedText.getRangeAt(0).endOffset) ;
+         
+         var range_temp = selectedText.getRangeAt(0);
+         
+         var preCaretRange = range_temp.cloneRange();
+         
+         preCaretRange.selectNodeContents(document.getElementById('input'));
+         preCaretRange.setEnd(range_temp.startContainer, range_temp.startOffset);
+         start = preCaretRange.toString().length;
+         preCaretRange.setEnd(range_temp.endContainer, range_temp.endOffset);
+         end = preCaretRange.toString().length;
+         range.push(start,end);
+         window.getSelection().getRangeAt(0).surroundContents(element);
          var rangeToSelect = document.createRange();
          rangeToSelect.selectNode(selectedText.anchorNode);
          var objectText = rangeToSelect.toString();
-         window.getSelection().getRangeAt(0).surroundContents(element);
+         
       }
-
       var textSelected = selectedText.toString();
-      console.log(ipcRenderer.send('text-selection', textSelected,range,objectText ))
+      ipcRenderer.send('text-selection', textSelected,range,objectText )
    }
 
+   
 </script>

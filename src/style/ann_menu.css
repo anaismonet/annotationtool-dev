@@ -134,6 +134,8 @@ button:hover {
 
 .search {
   display: block;
+  overflow: auto;
+  text-align: left;
 }
 
 li {

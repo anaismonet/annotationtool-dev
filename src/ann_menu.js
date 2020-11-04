@@ -107,7 +107,6 @@ ipcRenderer.on('inputstoPrint', (event, txt) => {
       // create html string
       const txtItems = txt.reduce((html, text) => {
         html += `<a id="input" class="input-txt" onclick="changeClass(this);">${text}</a>`
-        //html += `<textarea id="input" class="input-txt" readonly>${text}</textarea>`
         return html
       }, '')
 
@@ -127,7 +126,6 @@ ipcRenderer.on('toClear', (event) => {
   })
 
 ipcRenderer.on('annAddList', (event, txt,annotation ) => {
-  alert(txt)
   var txtList = "(" +  txt.concat(',',annotation) + ")"
 
   var li = document.createElement('li');
