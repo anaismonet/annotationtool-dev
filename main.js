@@ -1,5 +1,5 @@
 const path = require('path')
-const { app, ipcMain } = require('electron')
+const { app, ipcMain, ipcRenderer } = require('electron')
 
 const DataJson = require('./DataJson')
 const Window = require('./Window')
@@ -17,6 +17,7 @@ const textData = new DataStore({ name: 'TextMain' })
 const DataStructure = new DataJson({ name: 'DataStruct' })
 
 const config = require('./config/DataStruct.json')
+const { text } = require('d3')
 
 function main() {
 
@@ -162,7 +163,7 @@ ipcMain.on('annotate-object',(event,elt) => {
     console.log(DataStructure.addType(annotation).type)
 
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
-    
+
     fs.readFile('./config/DataStruct.json','utf8', (err,jsonString) => {
       if(err){
         console.log("DataStruct.json (reading fail) : ", err)
@@ -250,11 +251,13 @@ ipcMain.on('annotate-object',(event,elt) => {
   console.log(range)
   console.log(objectText)
   /* Une fois qu'on a reçu l'annotation de annotation_spec.js */
-  ipcMain.on('text-selection-annotation', (event, annotation, annotateAll) => {
+  ipcMain.once('text-selection-annotation', (event, annotation, annotateAll) => {
     console.log('icpmain in ipcmain')
     console.log(txt)
     console.log(annotation)
     console.log(annotateAll);
+
+    console.log(mainWindow.send('annAddList', txt,annotation));
 
     const updatedText = DataStructure.addText(txt).inputs
     console.log(updatedText)

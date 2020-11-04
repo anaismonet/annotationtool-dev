@@ -125,3 +125,13 @@ ipcRenderer.on('toClear', (event) => {
       list[i].parentElement.removeChild(list[i]);
     }
   })
+
+ipcRenderer.on('annAddList', (event, txt,annotation ) => {
+  alert(txt)
+  var txtList = "(" +  txt.concat(',',annotation) + ")"
+
+  var li = document.createElement('li');
+  li.appendChild(document.createTextNode(txtList));
+  document.getElementById('annList').appendChild(li);
+  
+})

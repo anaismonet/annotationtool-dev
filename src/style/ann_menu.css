@@ -135,3 +135,7 @@ button:hover {
 .search {
   display: block;
 }
+
+li {
+  color: black;
+}
