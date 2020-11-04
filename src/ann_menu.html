@@ -21,7 +21,7 @@
             <button id="AnnoterBtn" type="button" class="btn">Annoter tout le texte</button>
             <button id="AnnoterPartBtn" type="button" class="btn" onclick="GetSelectedText()">Annoter entité</button>
             <button id="clearBtn" type="button" class="btn">Effacer</button>
-            <button id="Refresh" type="button" class="btn">Reprendre l'ancien travail</button>
+            <button id="Refresh" type="button" class="btn">Télécharger le texte du travail précédent</button>
             <button id="DownloadBtn" type="button" class="btn">Télécharger JSON</button>
          </div>
          <div id="contenu">
@@ -34,7 +34,7 @@
                </div>
                <div class = "search" id="ann-list">
                   <ul class="annotation-list" id="annList">
-                     
+
                   </ul>
                </div>
 
@@ -70,11 +70,11 @@
 
       if (window.getSelection) {
          selectedText = window.getSelection();
-         
+
          var range_temp = selectedText.getRangeAt(0);
-         
+
          var preCaretRange = range_temp.cloneRange();
-         
+
          preCaretRange.selectNodeContents(document.getElementById('input'));
          preCaretRange.setEnd(range_temp.startContainer, range_temp.startOffset);
          start = preCaretRange.toString().length;
@@ -85,11 +85,11 @@
          var rangeToSelect = document.createRange();
          rangeToSelect.selectNode(selectedText.anchorNode);
          var objectText = rangeToSelect.toString();
-         
+
       }
       var textSelected = selectedText.toString();
       ipcRenderer.send('text-selection', textSelected,range,objectText )
    }
 
-   
+
 </script>
