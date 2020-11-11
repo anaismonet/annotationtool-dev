@@ -128,8 +128,13 @@ ipcRenderer.on('toClear', (event) => {
 ipcRenderer.on('annAddList', (event, txt,annotation ) => {
   var txtList = "(" +  txt.concat(',',annotation) + ")"
 
+  var a = document.createElement('a');
+
+
   var li = document.createElement('li');
-  li.appendChild(document.createTextNode(txtList));
+  a.appendChild(document.createTextNode(txtList));
+  li.appendChild(a);
+  //li.appendChild(document.createTextNode(txtList));
   document.getElementById('annList').appendChild(li);
   
 })

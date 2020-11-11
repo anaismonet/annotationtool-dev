@@ -32,9 +32,14 @@
                <div class = "search" id="ent">
                  Annotations
                </div>
+
+               <div class = "search" id = "bar">
+                  <input type="text" id="mySearch" onkeyup="mySearch()" placeholder="Search for..">
+               </div>
+               
                <div class = "search" id="ann-list">
                   <ul class="annotation-list" id="annList">
-
+                     
                   </ul>
                </div>
 
@@ -91,5 +96,24 @@
       ipcRenderer.send('text-selection', textSelected,range,objectText )
    }
 
+   function mySearch(){
+      // Declare variables
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById('mySearch');
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("annList");
+      li = ul.getElementsByTagName('li');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 0; i < li.length; i++) {
+         a = li[i].getElementsByTagName("a")[0];
+         txtValue = a.textContent || a.innerText;
+         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+         } else {
+            li[i].style.display = "none";
+         }
+      }
+   }
 
 </script>
