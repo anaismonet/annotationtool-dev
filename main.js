@@ -97,7 +97,7 @@ function main() {
   let annSpecWin
 
   ipcMain.on('add-ann-specifique-window', () => {
-    console.log('add-ann-specifique-window')
+    
     // if annWin does not already exist
     if (!addWin && !annWin) {
       // create a new  window
@@ -159,9 +159,21 @@ ipcMain.on('annotate-object',(event,elt) => {
   console.log('click');
   console.log(elt);
 
-  ipcMain.on('add-annotation', (event, annotation) => {
+  ipcMain.once('add-annotation', (event, annotation) => {
     console.log(DataStructure.addType(annotation).type)
 
+    var length_input = textData.getinputs().length;
+    var num = 0;
+    if (length_input == 1){
+      console.log(mainWindow.send('annAddList', 'Annotation du texte',annotation));
+    } else{
+      for(var i = 0; i <length_input; i++){
+        if(elt.localeCompare(textData.getinputs()[i]) == 0) {
+          console.log(mainWindow.send('annAddList', 'Annotation Objet' + (i+1).toString(),annotation));
+        }
+      }
+    }
+    
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
 
     fs.readFile('./config/DataStruct.json','utf8', (err,jsonString) => {
