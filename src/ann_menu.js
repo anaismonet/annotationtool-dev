@@ -4,6 +4,7 @@ const {dialog} = require('electron').remote
 const fs = require('fs')
 const { ipcRenderer } = require('electron')
 var path = require('path')
+const { allowedNodeEnvironmentFlags } = require('process')
 
 document.getElementById('Refresh').addEventListener('click', () => {
   ipcRenderer.send('maj')
@@ -125,15 +126,83 @@ ipcRenderer.on('toClear', (event) => {
     }
   })
 
-ipcRenderer.on('annAddList', (event, txt,annotation ) => {
+ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
   var txtList = "(" +  txt.concat(',',annotation) + ")"
+  
 
   var a = document.createElement('a');
   var li = document.createElement('li');
-  //var div = document.createElement('div').className("ex");
+  var button = document.createElement('button');
+  var ex = 'X';
+  button.className = 'ex';
   
+  button.appendChild(document.createTextNode(ex));
+  button.onclick = function() { 
+    
+    li.removeChild(a);
+    
+
+    fs.readFile('./config/DataStorage.json','utf8', (err,content) => {
+      if (err) {
+        alert("An error ocurred creating the file " + err.message)
+      }
+      else {
+        const contentJson = JSON.parse(content);
+
+        fs.readFile('./config/TextMain.json','utf8', (err,inputs) => {
+          if (err){
+            alert("An error ocurred opening the file " + err.message)
+          }
+          else{
+            const inputsJson = JSON.parse(inputs);
+            const textAnnote = inputsJson['inputs'][num];
+            
+            if (txt.search("texte") != -1){
+              
+              
+              for(var i = 0; i < contentJson.length; i ++){
+                var elem = contentJson[i];
+                
+                if (elem['text'].localeCompare(textAnnote)==0 && elem['type'].localeCompare(annotation)==0){
+                  contentJson.splice(i,1);
+                }
+              }  
+
+            }
+            
+            else { 
+
+              for(var i = 0; i < contentJson.length; i ++){
+                var elem = contentJson[i];
+                
+                if (elem['text'].localeCompare(textAnnote)==0 && elem['entities'][0][2].localeCompare(annotation)==0){
+                  contentJson.splice(i,1);
+                }
+              }
+            
+            
+            }
+
+
+            var newContent = JSON.stringify(contentJson);
+
+            fs.writeFile('./config/DataStorage.json', newContent, (err) => {
+              if (err) {
+                alert("An error ocurred creating the file " + err.message);
+              }
+            })
+            
+          }
+
+        })
+        
+      }
+    })
+    
+   };
 
   a.appendChild(document.createTextNode(txtList));
+  a.appendChild(button);
   li.appendChild(a);
 
   document.getElementById('annList').appendChild(li);

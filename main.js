@@ -165,11 +165,11 @@ ipcMain.on('annotate-object',(event,elt) => {
     var length_input = textData.getinputs().length;
     var num = 0;
     if (length_input == 1){
-      console.log(mainWindow.send('annAddList', 'Annotation du texte',annotation));
+      console.log(mainWindow.send('annAddList', 'Annotation du texte',annotation,0));
     } else{
       for(var i = 0; i <length_input; i++){
         if(elt.localeCompare(textData.getinputs()[i]) == 0) {
-          console.log(mainWindow.send('annAddList', 'Annotation Objet' + (i+1).toString(),annotation));
+          console.log(mainWindow.send('annAddList', 'Annotation Objet' + (i+1).toString(),annotation,i));
         }
       }
     }
@@ -269,7 +269,7 @@ ipcMain.on('annotate-object',(event,elt) => {
     console.log(annotation)
     console.log(annotateAll);
 
-    console.log(mainWindow.send('annAddList', txt,annotation));
+    console.log(mainWindow.send('annAddList', txt,annotation,0));
 
     const updatedText = DataStructure.addText(txt).inputs
     console.log(updatedText)
