@@ -145,50 +145,46 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
     fs.readFile('./config/DataStorage.json','utf8', (err,content) => {
       if (err) {
         alert("An error ocurred creating the file " + err.message)
-      }
-      else {
+      }else {
         const contentJson = JSON.parse(content);
 
         fs.readFile('./config/TextMain.json','utf8', (err,inputs) => {
           if (err){
             alert("An error ocurred opening the file " + err.message)
-          }
-          else{
+          }else{
             const inputsJson = JSON.parse(inputs);
             const textAnnote = inputsJson['inputs'][num];
             
-            if (txt.search("texte") != -1){
-              
-              
+            if (txt.search("Annotation du texte") != -1 || txt.search("Annotation Objet") != -1){
+              //alert("within search")
               for(var i = 0; i < contentJson.length; i ++){
                 var elem = contentJson[i];
-                
+               
                 if (elem['text'].localeCompare(textAnnote)==0 && elem['type'].localeCompare(annotation)==0){
                   contentJson.splice(i,1);
+               
                 }
               }  
 
-            }
-            
-            else { 
-
+            }else { 
+              //alert('within not search')
+              //alert(contentJson.length)
               for(var i = 0; i < contentJson.length; i ++){
                 var elem = contentJson[i];
-                
+                alert(i)
                 if (elem['text'].localeCompare(textAnnote)==0 && elem['entities'][0][2].localeCompare(annotation)==0){
                   contentJson.splice(i,1);
+                  //alert('trouvé');
                 }
               }
-            
-            
             }
-
-
             var newContent = JSON.stringify(contentJson);
 
             fs.writeFile('./config/DataStorage.json', newContent, (err) => {
               if (err) {
                 alert("An error ocurred creating the file " + err.message);
+              } else{
+                alert('Suppresion réussie');
               }
             })
             
