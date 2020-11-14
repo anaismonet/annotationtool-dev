@@ -127,8 +127,14 @@ ipcRenderer.on('toClear', (event) => {
   })
 
 ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
-  var txtList = "(" +  txt.concat(',',annotation) + ")"
-  
+  //var txtList = "(" +  txt.concat(',',annotation) + ")"
+  var div = document.createElement('div');
+  var ann = annotation;
+  var AnnNode = document.createTextNode(ann)
+  div.appendChild(AnnNode);
+  var txtList = txt + ":";
+  var textarea = document.createElement('textarea');
+  textarea.id = "Mytextarea";
 
   var a = document.createElement('a');
   var li = document.createElement('li');
@@ -137,6 +143,28 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
   button.className = 'ex';
   
   button.appendChild(document.createTextNode(ex));
+
+  var buttonModify = document.createElement('button');
+  var modify = 'Modifier';
+  buttonModify.className = 'modifier';
+  
+  buttonModify.appendChild(document.createTextNode(modify));
+
+  var buttonConfirmer = document.createElement('button');
+  var confirmer = 'Ok';
+  buttonConfirmer.appendChild(document.createTextNode(confirmer));
+  buttonConfirmer.className = 'confirmer';
+
+  a.appendChild(document.createTextNode(txtList));
+  a.appendChild(div);
+
+  a.appendChild(button);
+  a.appendChild(buttonModify);
+  li.appendChild(a);
+
+  document.getElementById('annList').appendChild(li);
+  
+
   button.onclick = function() { 
     
     li.removeChild(a);
@@ -197,10 +225,84 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
     
    };
 
-  a.appendChild(document.createTextNode(txtList));
-  a.appendChild(button);
-  li.appendChild(a);
-
-  document.getElementById('annList').appendChild(li);
   
+  buttonModify.onclick = function() { 
+    a.removeChild(div);
+    a.removeChild(button);
+    a.removeChild(buttonModify);
+    a.appendChild(textarea);
+    a.appendChild(button);
+    a.appendChild(buttonConfirmer);
+  };
+
+  buttonConfirmer.onclick = function(){
+    var oldAnn = div.childNodes[0].nodeValue;
+    alert(oldAnn);
+    div.removeChild(AnnNode);
+    var ann = document.getElementById("Mytextarea").value;
+    AnnNode = document.createTextNode(ann);
+    div.appendChild(AnnNode);
+    a.removeChild(textarea);
+    a.removeChild(button);
+    a.removeChild(buttonConfirmer);
+    a.appendChild(div);
+    a.appendChild(button);
+    a.appendChild(buttonModify);
+
+    fs.readFile('./config/DataStorage.json','utf8', (err,content) => {
+      if (err) {
+        alert("An error ocurred creating the file " + err.message)
+      }else {
+        const contentJson = JSON.parse(content);
+
+        fs.readFile('./config/TextMain.json','utf8', (err,inputs) => {
+          if (err){
+            alert("An error ocurred opening the file " + err.message)
+          }else{
+            const inputsJson = JSON.parse(inputs);
+            const textAnnote = inputsJson['inputs'][num];
+            
+            if (txt.search("Annotation du texte") != -1 || txt.search("Annotation Objet") != -1){
+              for(var i = 0; i < contentJson.length; i ++){
+                var elem = contentJson[i];
+               
+                if (elem['text'].localeCompare(textAnnote)==0 && elem['type'].localeCompare(oldAnn)==0){
+                  contentJson.splice(i,1);
+                  contentJson.push({"text": textAnnote, "type": ann});
+                  //alert('trouvé')
+                }
+              }  
+            }else { 
+              for(var i = 0; i < contentJson.length; i ++){
+                var elem = contentJson[i];
+                if (elem['text'].localeCompare(textAnnote)==0 && elem['entities'][0][2].localeCompare(oldAnn)==0){
+                  var range =  elem['entities'][0];
+                  contentJson.splice(i,1);
+                  contentJson.push({"text": textAnnote, "type":"", "entities": [[range[0],range[1],ann]]});
+                  //alert('trouvé');
+                }
+              }
+            }
+            var newContent = JSON.stringify(contentJson);
+
+            fs.writeFile('./config/DataStorage.json', newContent, (err) => {
+              if (err) {
+                alert("An error ocurred creating the file " + err.message);
+              } else{
+                alert('Modification réussie');
+              }
+            })
+            
+          }
+
+        })
+        
+      }
+    })
+
+  };
+
+
 })
+
+
