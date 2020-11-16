@@ -34,14 +34,6 @@ function main() {
     mainWindow.webContents.send('inputstoPrint', textData.inputs)
   })
 
-  /*
-  // if the render process crashes, reload the window
-  mainWindow.webContents.on('crashed', () => {
-    mainWindow.destroy();
-    main();
-  });
-  */
-
   // Fenêtre secondaire qui va nous permettre d'écrire le texte à annoter
   let addWin
   // create add text window
@@ -271,19 +263,45 @@ ipcMain.on('annotate-object',(event,elt) => {
 
     console.log(mainWindow.send('annAddList', txt,annotation,0));
 
-    const updatedText = DataStructure.addText(txt).inputs
-    console.log(updatedText)
     console.log(DataStructure.addType(annotation).type)
+
+    /* 
+      On récupére le rang de l'objet dans le fichier d'entrée
+      Pour recalculer le range qui compte le nombre de caractère depuis le début
+      du premier objet du fichier d'entrée et non depuis le début de l'objet 
+      concerné 
+      */
+    
+    var length_input = textData.getinputs().length; 
+    var start = 0;
+
+    for(var i = 0; i < length_input; i ++){
+      if(txt.localeCompare(textData.getinputs()[i]) == 0 && i==0) {
+        break;
+      } else {
+        console.log("Objet");
+        console.log(i);
+        console.log(textData.getinputs()[i].length);
+        
+        if(objectText.localeCompare(textData.getinputs()[i]) == 0) {
+          break;
+        }
+        start = start + textData.getinputs()[i].length;
+      }
+    };
+
+    range = [range[0]-start,range[1]-start];
+
 
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
-        console.log("File read failed:", err)
+        console.log("File read failed:", err);
         return
       }
       const jsonString2 = JSON.parse(jsonString);
-      console.log('jsonString2')
-      console.log(jsonString2)
+      console.log('jsonString2');
+      console.log(jsonString2);
 
       /*
       Appelle la fonction pour l'annotation spécifique qui fera le nouvel objet
@@ -292,7 +310,7 @@ ipcMain.on('annotate-object',(event,elt) => {
       "entities": [(B1,E1,annotation),...,(Bn,En,annotation)]} avec n le nombre d'occurences de txt dans textMain
       */
 
-      openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range,objectText)
+      openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range,objectText);
 
       })
     })
@@ -334,6 +352,9 @@ ipcMain.on('annotate-object',(event,elt) => {
 
     console.log("list_positions");
     console.log(list_positions);
+
+ 
+
 
     // Ouvre filename en écriture + lecture
     fs.readFile(filename, 'utf8', function (err, data) {

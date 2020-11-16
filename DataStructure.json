@@ -1,1 +1,1 @@
-[{"text":"Ceci est un test !","entities":[[12,16,"spec"]],"type":["as","ann","ad","aq","ok","Annotation1","premiere","prems","ok1","azerty","all","aze","poire","dfg"]}]
+[{"text":"Ceci est un test !","entities":[[12,16,"spec"],[0,4,"premier"]],"type":["as","ann","ad","aq","ok","Annotation1","premiere","prems","ok1","azerty","all","aze","poire","dfg"]}]
