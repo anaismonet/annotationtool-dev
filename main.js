@@ -292,7 +292,12 @@ ipcMain.on('annotate-object',(event,elt) => {
 
     range = [range[0]-start,range[1]-start];
 
+    var jsonString2 = {'text': objectText, 'type': annotation};
+    console.log('jsonString2');
+    console.log(jsonString2);
 
+    openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range,txt);
+    /*
     // Ajouter l'objet JSON dans un fichier sauvegarde dans config
     fs.readFile('./config/DataStruct.json', 'utf8', (err, jsonString) => {
       if (err) {
@@ -308,16 +313,17 @@ ipcMain.on('annotate-object',(event,elt) => {
       {"text": TextMain.inputs[0],
       "type" : "", (on met un type vide pour savoir qu'on annote spécifiquement lors de la recherche d'objets dans DataStorage)
       "entities": [(B1,E1,annotation),...,(Bn,En,annotation)]} avec n le nombre d'occurences de txt dans textMain
-      */
+      
 
-      openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range,objectText);
+      openJsonAddAnnSpec('./config/DataStorage.json', jsonString2, annotateAll,range,txt);
 
       })
+      */
     })
   })
 
   /* Écriture du json avec annotation spécifique */
-  function openJsonAddAnnSpec(filename, jsonString2, annotateAll,range,objectText) {
+  function openJsonAddAnnSpec(filename, jsonString2, annotateAll,range,txt) {
     // Ouvre DataStorage.json qui va contenir toutes les annotations
     fs.open(filename, 'r+', function (err, fd) {
 
@@ -328,24 +334,24 @@ ipcMain.on('annotate-object',(event,elt) => {
             console.log(err)
           } else {
             console.log("DataStorage.json successfully created")
-            addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range,objectText)
+            addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range,txt)
           }
         });
 
       } else {
         // Il faudra laisser la possibilité de recharger le travail précédent
         console.log("DataStorage.json already exists")
-        addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range,objectText)
+        addObjectJsonAnnSpec(filename, jsonString2, annotateAll,range,txt)
       }
     });
 
   }
 
   /* Ajoute les objets JSON concernant les annotations spécifiques dans DataStorage.json */
-  function addObjectJsonAnnSpec(filename, jsonAnnSpec, annotateAll,range,objectText) {
+  function addObjectJsonAnnSpec(filename, jsonAnnSpec, annotateAll,range,txt) {
 
     if (annotateAll) {
-      list_positions = recherche(jsonAnnSpec['text'],jsonAnnSpec['type'],objectText);
+      list_positions = recherche(txt,jsonAnnSpec['type'],jsonAnnSpec['text']);
     } else {
       list_positions = [[range[0],range[1],jsonAnnSpec['type']]]
     }
@@ -369,7 +375,7 @@ ipcMain.on('annotate-object',(event,elt) => {
         const file = JSON.parse(data);
 
         /* On ajoute au contenu de filename l'objet JSON qui concerne l'annotation spécifique */
-        var objet = {"text" : objectText, "type" : "", "entities" : list_positions };
+        var objet = {"text" : jsonAnnSpec['text'], "type" : "", "entities" : list_positions };
         console.log(objet)
         file.push(objet);
 
@@ -434,6 +440,7 @@ ipcMain.on('annotate-object',(event,elt) => {
             matrice.push(tab)
         }
         posi = posi + txt[i].length + 1
+        console.log("posi Recherche")
         console.log(posi)
     }
     return matrice

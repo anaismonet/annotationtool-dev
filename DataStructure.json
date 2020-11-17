@@ -1,1 +1,1 @@
-[{"text":"Test de la fonction recherche qui cherche les occurences. Ici on aimarait sélection test dès que test apparaît. ","entities":[[0,4,"testAnnSpec"]],"type":[]},{"text":"calcul range test de la fonction recherche","entities":[],"type":[]},{"text":"dernier objet","entities":[[0,7,"trois"]],"type":[]}]
+[{"text":"Voici le texte qui me permet de tester si je retrouve le mot test partout. Voici un autre test.","entities":[[0,94,"test"]],"type":[]}]
