@@ -199,7 +199,7 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
               //alert(contentJson.length)
               for(var i = 0; i < contentJson.length; i ++){
                 var elem = contentJson[i];
-                alert(i)
+                
                 if (elem['text'].localeCompare(textAnnote)==0 && elem['entities'][0][2].localeCompare(annotation)==0){
                   contentJson.splice(i,1);
                   //alert('trouvé');

@@ -1,1 +1,1 @@
-[{"text":"Ceci est un test !","entities":[[12,16,"spec"],[0,4,"premier"]],"type":["as","ann","ad","aq","ok","Annotation1","premiere","prems","ok1","azerty","all","aze","poire","dfg"]}]
+[{"text":"Test de la fonction recherche qui cherche les occurences. Ici on aimarait sélection test dès que test apparaît. ","entities":[[0,4,"testAnnSpec"]],"type":[]},{"text":"calcul range test de la fonction recherche","entities":[],"type":[]},{"text":"dernier objet","entities":[[0,7,"trois"]],"type":[]}]
