@@ -3,16 +3,16 @@ html {
 }
 body{
   margin: 0;
-  height: 600px;
-  width: 1000px;
+  height: 100%;
+  width: 100%;
 }
 #entete, #menu, #contenu, #footer{
   padding:1px 0;
   margin: 0;
 }
 #entete {
-  background-color: #5A8060;
-  height: 20px;
+  background-color: rgb(71,71,71);
+  height: 30px;
   color:white;
 }
 
@@ -20,6 +20,8 @@ body{
 
 #top {
   color: #F1F1F1;
+  font-size: 25px;
+  margin-right: 10px;
 }
 
 #top:hover {
@@ -34,12 +36,13 @@ body{
   float:left;
   height: 100%;
   width:200px;
-  background-color: #B5C7B8;
+  background-color: rgb(240,239,234);
+  position: relative;
 }
 #contenu {
   height: 100%;
   margin-left:200px;
-  background-color:#F5F5F5;
+  background-color: rgb(220,220,220);
 }
 
 header {
@@ -90,27 +93,84 @@ a.input-txt:hover {
   transition: 0.3s;
 }
 
+#buttonerase{
+  vertical-align:middle;
+  width:20px;
+  height:20px;
+  background:url(img/icons8-poubelle-32.png) no-repeat center;
+  background-size: 80%;
+  margin-left: 0%;
+  margin-top: 1px;
+  border: none;
+  display:inline-block;
+ 
+}
+
+#buttonConfirmer{
+  vertical-align:middle;
+  width:20px;
+  height:20px;
+  background:url(img/checkbox.png) no-repeat center;
+  background-size: 80%;
+  margin-left: 0%;
+  margin-top: 1px;
+  border: none;
+  display:inline-block;
+
+}
+
+#buttonModify{
+  vertical-align:middle;
+  display:inline-block;
+  width:20px;
+  height:20px;
+  background:url(img/stylo.jpg) no-repeat center;
+  background-size: 68%;
+  margin-left: 0%;
+  margin-top: 1px;
+  border: none;
+
+}
+
 #WriteBtn {
   margin-top: 10%;
 }
 
+
+.btn2{
+  position:absolute;
+  height:40px;
+  bottom: 10%;
+  left: 0;
+  background-color: rgb(23,132,219);
+  color:#fff;
+  font:bold 20px;
+}
+
+.btnHaut{
+  margin-top: 50%;
+}
+
 button{
   margin-left: 15%;
-  margin-top: 4%;
+  margin-top: 10%; 
   transition-duration: 0.4s;
-  border-radius: 6px;
-  padding: 8px 15px;
-  font-size: 12px;
-  background-color: #F1F1F1;
+  border: none;
+ /* border-radius: 6px;
+  padding: 8px 15px; */
+  font-size: 20px;
+ /* background-color: #F1F1F1; */
+  background: transparent;
   color: black;
-  border: 0.3px solid #5A8060;
+  /*border: 0.3px solid #5A8060; */
   width:70%;
 }
 
+
 button:hover {
-  background-color: #5A8060;
   color: white;
 }
+
 
 #annotation {
   margin-top: 2%;
@@ -121,7 +181,8 @@ button:hover {
 }
 
 #ent {
-  background-color: #B5C7B8;
+  background-color: rgb(85,156,121);
+  vertical-align: baseline;
   height: 3%;
   width: 100%;
   color : white;

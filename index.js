@@ -25,3 +25,4 @@ window.addEventListener('contextmenu', (e) => {
 e.preventDefault()
 menu.popup(remote.getCurrentWindow())
     }, false)
+

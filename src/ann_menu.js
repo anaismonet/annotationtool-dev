@@ -5,6 +5,7 @@ const fs = require('fs')
 const { ipcRenderer } = require('electron')
 var path = require('path')
 const { allowedNodeEnvironmentFlags } = require('process')
+const ExcelJS = require('exceljs');
 
 document.getElementById('Refresh').addEventListener('click', () => {
   ipcRenderer.send('maj')
@@ -59,43 +60,74 @@ document.getElementById('AddtxtBtn').addEventListener('click', () => {
             ipcRenderer.send('add-txt', data)
           }
         })
-      }else if( ext == '.json'){
-        fs.readFile(fileNames[0], 'utf-8', (err, data) => {
-          if (err){
-            console.log('cannot read file', err)
-          }else{
-            const obj = data.split('{')
-            for (var i = 1; i<obj.length; i++){
-              const text = obj[i].split('\"text\"')
-              const txt = text[1].split('\"')
-              ipcRenderer.send('add-txt', txt[1])
-            }
-          }
-        })
-      }else if (ext == '.csv'){
-        fs.readFile(fileNames[0], 'utf-8', (err, data) => {
-          if (err){
-            console.log('cannot read file', err)
-          }else{
-            const obj = data.split('\n')
-            var ind = 0
-            const index = obj[0].split(',')
-            for (var j = 0; j<index.length; j++){
-              if (index[j] == 'text'){
-                ind = j;
+      }else if(ext == '.json'){
+        ipcRenderer.send('add-json-window')
+        ipcRenderer.once('key-json', (event, key) => {
+          fs.readFile(fileNames[0], 'utf-8', (err, data) => {
+            if (err){
+              console.log('cannot read file', err)
+            }else{
+              const obj = data.split('{')
+              for (var i = 1; i<obj.length; i++){
+                const text = obj[i].split('\'' + key + '\'')
+                const txt = text[1].split('\'')
+                ipcRenderer.send('add-txt', txt[1])
               }
             }
-            for (var i = 1; i<obj.length-1; i++){
-              const text = obj[i].split(',')
-              ipcRenderer.send('add-txt', text[ind])
+          })
+        })
+      }else if (ext == '.csv'){
+        ipcRenderer.send('add-csv-window')
+        ipcRenderer.once('key-csv', (event, key_sep) => {
+          fs.readFile(fileNames[0], 'utf-8', (err, data) => {
+            if (err){
+              console.log('cannot read file', err)
+            }else{
+              const key = key_sep.split(';')[0]
+              const sep= key_sep.split(';')[1]
+              const obj = data.split('\n')
+              var ind = 0
+              const index = obj[0].split(',')
+              for (var j = 0; j<index.length; j++){
+                if (index[j] == key){
+                  ind = j;
+                }
+              }
+              for (var i = 1; i<obj.length-1; i++){
+                const text = obj[i].split(sep)
+                ipcRenderer.send('add-txt', text[ind])
+              }
             }
-          }
+          })
+        })
+      }else if (ext == '.xlsx'){
+        ipcRenderer.send('add-json-window')
+        ipcRenderer.once('key-json', (event, key) => {
+          const workBook = new ExcelJS.Workbook()
+          workBook.xlsx.readFile(filePath).then(function() {
+            const sheet = workBook.getWorksheet(1)
+            var print = 0
+            for (var i = 1; i<= sheet.columnCount; i++){
+              const col = sheet.getColumn(i)
+              col.eachCell({ includeEmpty: false }, function(cell, rowNumber) {
+                if (rowNumber == 1){
+                  print = 0
+                  if(cell.value ==key){
+                    print = 1
+                  }
+                }else {
+                  if (print == 1){
+                    ipcRenderer.send('add-txt', cell.value)
+                  }
+                }
+              })
+            }
+          })
         })
       }
     }
   })
 })
-
 
 
 // Quand ce renderer process reçoit inputstoPrint
@@ -139,27 +171,19 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
   var a = document.createElement('a');
   var li = document.createElement('li');
   var button = document.createElement('button');
-  var ex = 'X';
-  button.className = 'ex';
-  
-  button.appendChild(document.createTextNode(ex));
-
+  button.setAttribute("id", "buttonerase")
   var buttonModify = document.createElement('button');
-  var modify = 'Modifier';
-  buttonModify.className = 'modifier';
-  
-  buttonModify.appendChild(document.createTextNode(modify));
+  buttonModify.setAttribute("id","buttonModify")
 
   var buttonConfirmer = document.createElement('button');
-  var confirmer = 'Ok';
-  buttonConfirmer.appendChild(document.createTextNode(confirmer));
-  buttonConfirmer.className = 'confirmer';
+  buttonConfirmer.setAttribute("id","buttonConfirmer")
 
   a.appendChild(document.createTextNode(txtList));
   a.appendChild(div);
-
   a.appendChild(button);
   a.appendChild(buttonModify);
+
+ 
   li.appendChild(a);
 
   document.getElementById('annList').appendChild(li);
@@ -301,7 +325,6 @@ ipcRenderer.on('annAddList', (event, txt,annotation, num ) => {
     })
 
   };
-
 
 })
 
