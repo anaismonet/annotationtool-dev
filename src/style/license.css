@@ -75,6 +75,11 @@ a.input-txt:hover {
   border : transparent;
 }
 
+object {
+  height: 100%;
+  width: 100%;
+}
+
 #Inputtxt {
   margin-top: 2%;
   height: 96%;
@@ -201,7 +206,7 @@ button:hover {
 
 .search {
   display: block;
-  font-size: 95%;
+  font-size: 24px;
   font-family: "Raleway", sans-serif;
   overflow: auto;
   text-align: left;

@@ -7,14 +7,14 @@ const { ipcRenderer } = require('electron')
 // et va l'envoyer au main process avec le message 'add-text'
 document.getElementById('InputText').addEventListener('submit', (evt) => {
 
-  // prevent default refresh functionality of forms
+
   evt.preventDefault()
 
-  // input on the form
+
   const input = evt.target[0]
-  // send txt to main process
+  // envoie au main process
   ipcRenderer.send('add-csv-key', input.value)
-  // reset input
+  
   input.value = ''
 
 })
