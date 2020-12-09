@@ -66,7 +66,6 @@ function main() {
       })
 
       ipcMain.on('closeAddWInn', () => {
-        console.log('close')
         addWin.close()
         addWin = null
       })
@@ -92,6 +91,12 @@ function main() {
       annWin.on('closed', () => {
         annWin = null;
       })
+
+      ipcMain.on('closeannWin', () => {
+        annWin.close()
+        annWin = null
+      })
+
     }
   })
 
@@ -114,6 +119,11 @@ function main() {
 
       annSpecWin.on('closed', () => {
         annSpecWin = null;
+      })
+
+      ipcMain.on('closeannSpecWin', () => {
+        annSpecWin.close()
+        annSpecWin = null
       })
     }
   })
@@ -141,6 +151,12 @@ function main() {
       jsonWin.on('closed', () => {
         jsonWin = null;
       })
+
+      ipcMain.on('closejsonWin', () => {
+        jsonWin.close()
+        jsonWin = null
+      })
+
     }
   })
 
@@ -161,6 +177,10 @@ function main() {
       })
       csvWin.on('closed', () => {
         csvWin = null;
+      })
+      ipcMain.on('closecsvWin', () => {
+        csvWin.close()
+        csvWin = null
       })
     }
   })
@@ -215,7 +235,7 @@ function main() {
     */
 
     ipcMain.once('add-annotation', (event, annotation) => {
-      console.log(DataStructure.addType(annotation).type);
+      DataStructure.addType(annotation).type;
 
       var length_input = textData.getinputs().length;
       var num = 0;
@@ -365,7 +385,7 @@ function main() {
       };
 
       range = [range[0] - start, range[1] - start];
-      console.log(DataStructure.addType(annotation).type);
+      DataStructure.addType(annotation).type;
       var jsonString2 = { 'text': objectText, 'type': annotation };
       /*
       console.log('jsonString2');

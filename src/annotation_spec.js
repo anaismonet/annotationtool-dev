@@ -15,4 +15,5 @@ const { ipcRenderer } = require('electron')
 
     input.value = ''
 
+    ipcRenderer.send('closeAnnSpecWinn');
   })

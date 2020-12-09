@@ -8,13 +8,13 @@ const { ipcRenderer } = require('electron')
 document.getElementById('InputText').addEventListener('submit', (evt) => {
 
 
-  evt.preventDefault()
+  evt.preventDefault();
 
-
-  const input = evt.target[0]
+  const input = evt.target[0];
   // envoie au main process
-  ipcRenderer.send('add-csv-key', input.value)
-  
-  input.value = ''
+  ipcRenderer.send('add-csv-key', input.value);
 
+  input.value = '';
+
+  ipcRenderer.send('closecsvWin');
 })

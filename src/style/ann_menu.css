@@ -46,11 +46,6 @@ body{
   background-color: rgb(220,220,220);
 }
 
-header {
-  color : white;
-  grid-column: 1/-1;
-  }
-
 
 a {
   padding-top: 12.5px;

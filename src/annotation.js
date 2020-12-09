@@ -14,5 +14,5 @@ document.getElementById('InputText').addEventListener('submit', (evt) => {
   ipcRenderer.send('add-annotation', input.value)
 
   input.value = ''
-
+  ipcRenderer.send('closeannWin');
 })
